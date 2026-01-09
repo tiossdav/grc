@@ -50,7 +50,7 @@ export const Header = () => {
         <a href="/toolbox" className="hover:bg-[#3db9e7] py-4 px-4 font-medium">
           Tool Box
         </a>
-        <a href="#" className="hover:bg-[#3db9e7] py-4 px-4 font-medium">
+        <a href="/support" className="hover:bg-[#3db9e7] py-4 px-4 font-medium">
           Find Support
         </a>
         <a href="#" className="hover:bg-[#3db9e7] py-4 px-4 font-medium">
