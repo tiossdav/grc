@@ -53,10 +53,13 @@ export const Header = () => {
         <a href="/support" className="hover:bg-[#3db9e7] py-4 px-4 font-medium">
           Find Support
         </a>
-        <a href="#" className="hover:bg-[#3db9e7] py-4 px-4 font-medium">
+        <a href="/voice" className="hover:bg-[#3db9e7] py-4 px-4 font-medium">
           Voices
         </a>
-        <a href="#" className="hover:bg-[#3db9e7] py-4 px-4 font-medium">
+        <a
+          href="/learning-hub"
+          className="hover:bg-[#3db9e7] py-4 px-4 font-medium"
+        >
           Learning Hub
         </a>
         <a href="#" className="hover:bg-[#3db9e7] py-4 px-4 font-medium">
