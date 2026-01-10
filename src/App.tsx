@@ -5,6 +5,7 @@ import Hub from "./pages/hub";
 import Support from "./pages/find-support";
 import Voices from "./pages/voice";
 import LearningHub from "./pages/learning-hub";
+import PartnerPortal from "./pages/partner-portal";
 
 function Router() {
   return (
@@ -15,6 +16,7 @@ function Router() {
       <Route path="/support" component={Support} />
       <Route path="/voice" component={Voices} />
       <Route path="/learning-hub" component={LearningHub} />
+      <Route path="/partner-portal" component={PartnerPortal} />
     </Switch>
   );
 }

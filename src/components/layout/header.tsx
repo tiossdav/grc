@@ -62,7 +62,10 @@ export const Header = () => {
         >
           Learning Hub
         </a>
-        <a href="#" className="hover:bg-[#3db9e7] py-4 px-4 font-medium">
+        <a
+          href="partner-portal"
+          className="hover:bg-[#3db9e7] py-4 px-4 font-medium"
+        >
           Partner Portal
         </a>
       </nav>

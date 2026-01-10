@@ -145,7 +145,7 @@ export default function LearningHub(): React.ReactElement {
             </div>
 
             {/* Right - Image */}
-            <div className="w-full bg-red-400">
+            <div className="w-full ">
               <img
                 src={unpicked}
                 alt="Person Learning"
@@ -310,7 +310,7 @@ export default function LearningHub(): React.ReactElement {
             </div>
 
             {/* Right - Image */}
-            <div className="w-full bg-red-400">
+            <div className="w-full ">
               <img
                 src={comm}
                 alt="Person Learning"
