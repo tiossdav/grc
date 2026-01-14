@@ -11,10 +11,10 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/hub" component={Hub} />
+      <Route path="/knowledge-hub" component={Hub} />
       <Route path="/toolbox" component={ToolBox} />
       <Route path="/support" component={Support} />
-      <Route path="/voice" component={Voices} />
+      <Route path="/voices" component={Voices} />
       <Route path="/learning-hub" component={LearningHub} />
       <Route path="/partner-portal" component={PartnerPortal} />
     </Switch>
