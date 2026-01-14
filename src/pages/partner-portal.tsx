@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
+import { Header } from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import partner from "@/assets/images/partner.png";
 
 interface ContentCard {
   id: number;
@@ -51,22 +54,19 @@ export default function PartnerPortal(): React.ReactElement {
       : contentCards.filter((card) => card.type === activeFilter);
 
   return (
-    <div className="bg-linear-to-br from-purple-50 to-blue-50 font-montserrat">
+    <div className="font-montserrat">
+      <Header />
       {/* Hero Section with Accordion */}
       <div className="max-w-7xl mx-auto py-12 px-4">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
           <div className="grid md:grid-cols-2">
             {/* Left - Image */}
-            <div className="relative h-full min-h-[500px]">
-              <div className="absolute inset-0 bg-linear-to-br from-amber-600 to-amber-800 flex items-center justify-center p-8">
-                <div className="text-center text-white/30">
-                  <p className="text-sm font-medium">
-                    Good Finance booth image
-                    <br />
-                    with people at a table
-                  </p>
-                </div>
-              </div>
+            <div className="w-full ">
+              <img
+                src={partner}
+                alt="Person Learning"
+                className="max-w-full max-h-full object-cover"
+              />
             </div>
 
             {/* Right - Content */}
@@ -579,6 +579,7 @@ export default function PartnerPortal(): React.ReactElement {
           </button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
