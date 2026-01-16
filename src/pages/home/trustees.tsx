@@ -8,15 +8,15 @@ export default function Trustees() {
           <div className="grid grid-cols-1 md:grid-cols-2 overflow-hidden rounded-2xl bg-white shadow-xl">
             {/* Content section */}
             <div className="flex flex-col justify-center p-8 md:p-12">
-              <h2 className="text-xl font-semibold text-indigo-800">
+              <h2 className="text-xl font-semibold text-[#95111c]">
                 Good Finance Presents:
               </h2>
 
-              <h1 className="mt-2 text-3xl font-bold text-indigo-900">
+              <h1 className="mt-2 text-3xl font-bold text-[#95111c]">
                 Benny&apos;s Social Investment Story
               </h1>
 
-              <p className="mt-4 text-lg font-medium text-indigo-900">
+              <p className="mt-4 text-lg font-medium text-[#95111c]">
                 A beaver with a big heart. A fairy with big ideas. A forest
                 ready for change.
               </p>
@@ -28,7 +28,7 @@ export default function Trustees() {
               </p>
 
               <div className="mt-6">
-                <button className="rounded-lg bg-purple-600 px-6 py-3 text-white font-semibold shadow-md transition hover:bg-purple-700">
+                <button className="rounded-lg bg-[#95111c] px-6 py-3 text-white font-semibold shadow-md transition hover:bg-[#95111c]">
                   Watch the series
                 </button>
               </div>

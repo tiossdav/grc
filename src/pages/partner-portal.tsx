@@ -71,7 +71,7 @@ export default function PartnerPortal(): React.ReactElement {
 
             {/* Right - Content */}
             <div className="p-12">
-              <h1 className="text-4xl font-bold text-indigo-900 mb-6">
+              <h1 className="text-4xl font-bold text-[#95111c] mb-6">
                 Working in partnership
               </h1>
 
@@ -120,7 +120,7 @@ export default function PartnerPortal(): React.ReactElement {
         </div>
 
         {/* For Social Investors Section */}
-        <div className="bg-indigo-900 py-8 text-center rounded-t-2xl">
+        <div className="bg-[#95111c] py-8 text-center rounded-t-2xl">
           <h2 className="text-4xl font-bold text-white">
             For Social Investors
           </h2>
@@ -191,7 +191,7 @@ export default function PartnerPortal(): React.ReactElement {
                 These data dashboard are an interactive way of exploring Good
                 Finance data.
               </p>
-              <button className="bg-indigo-900 hover:bg-indigo-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+              <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-2 px-6 rounded-lg transition-colors">
                 Explore the Data Dashboard
               </button>
             </div>
@@ -211,7 +211,7 @@ export default function PartnerPortal(): React.ReactElement {
                 </a>{" "}
                 and can link them directly to your investor profile.
               </p>
-              <button className="bg-indigo-900 hover:bg-indigo-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+              <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-2 px-6 rounded-lg transition-colors">
                 Submit a case study
               </button>
             </div>
@@ -272,7 +272,7 @@ export default function PartnerPortal(): React.ReactElement {
         </div>
 
         {/* For Advisors Section */}
-        <div className="bg-indigo-900 py-8 text-center rounded-t-2xl">
+        <div className="bg-[#95111c] py-8 text-center rounded-t-2xl">
           <h2 className="text-4xl font-bold text-white">For Advisors</h2>
         </div>
 
@@ -351,7 +351,7 @@ export default function PartnerPortal(): React.ReactElement {
               </li>
               <li>Have more than one year of experience</li>
             </ul>
-            <button className="bg-indigo-900 hover:bg-indigo-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+            <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-2 px-6 rounded-lg transition-colors">
               Read the listing criteria
             </button>
           </div>
@@ -387,7 +387,7 @@ export default function PartnerPortal(): React.ReactElement {
               </a>{" "}
               if you'd like an update on your profile.
             </p>
-            <button className="bg-indigo-900 hover:bg-indigo-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+            <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-2 px-6 rounded-lg transition-colors">
               Sign up to list as an advisor
             </button>
           </div>
@@ -397,7 +397,7 @@ export default function PartnerPortal(): React.ReactElement {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
           <div className="grid md:grid-cols-2">
             <div className="p-12">
-              <h2 className="text-3xl font-bold text-indigo-900 mb-6">
+              <h2 className="text-3xl font-bold text-[#95111c] mb-6">
                 Social investment for boards and trustees
               </h2>
               <p className="text-sm text-gray-700 mb-4">
@@ -455,7 +455,7 @@ export default function PartnerPortal(): React.ReactElement {
               investment enabled them to do and what the biggest challenges
               were.
             </p>
-            <button className="bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors w-full">
+            <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-2 px-6 rounded-lg transition-colors w-full">
               Peer videos
             </button>
           </div>
@@ -469,7 +469,7 @@ export default function PartnerPortal(): React.ReactElement {
               Read individual stories from trustees and directors about their
               experience of taking on social investment.
             </p>
-            <button className="bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors w-full">
+            <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-2 px-6 rounded-lg transition-colors w-full">
               Read trustee stories
             </button>
           </div>
@@ -485,14 +485,14 @@ export default function PartnerPortal(): React.ReactElement {
               Additional resources for board members and trustees wanting to
               navigate finances and decision making for their organisation.
             </p>
-            <button className="bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors w-full">
+            <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-2 px-6 rounded-lg transition-colors w-full">
               Access further resources
             </button>
           </div>
         </div>
 
         {/* Testimonial */}
-        <div className="bg-purple-700 rounded-xl shadow-xl p-12 text-center text-white mb-8">
+        <div className="bg-[#95111c] rounded-xl shadow-xl p-12 text-center text-white mb-8">
           <blockquote className="text-xl font-medium max-w-4xl mx-auto">
             "Social investment has provided us with the working capital needed
             to grow and meet the needs of the charity. Boards need to better
@@ -505,7 +505,7 @@ export default function PartnerPortal(): React.ReactElement {
         </div>
 
         {/* Podcasts, Videos & Blogs Section */}
-        <div className="bg-indigo-900 py-8 text-center rounded-t-2xl">
+        <div className="bg-[#95111c] py-8 text-center rounded-t-2xl">
           <h2 className="text-4xl font-bold text-white mb-6">
             Podcasts, Videos & Blogs
           </h2>
@@ -519,7 +519,7 @@ export default function PartnerPortal(): React.ReactElement {
                     ? filter === "Blog"
                       ? "bg-pink-600 text-white"
                       : filter === "Podcast"
-                      ? "bg-purple-600 text-white"
+                      ? "bg-[#95111c] text-white"
                       : filter === "Video"
                       ? "bg-teal-600 text-white"
                       : "bg-white text-gray-900"
@@ -544,7 +544,7 @@ export default function PartnerPortal(): React.ReactElement {
                   card.type === "Blog"
                     ? "bg-pink-600"
                     : card.type === "Podcast"
-                    ? "bg-purple-600"
+                    ? "bg-[#95111c]"
                     : "bg-teal-600"
                 }`}
               >
@@ -571,7 +571,7 @@ export default function PartnerPortal(): React.ReactElement {
           <button className="bg-pink-700 hover:bg-pink-800 text-white font-semibold py-3 px-8 rounded-lg transition-colors">
             See all Blogs
           </button>
-          <button className="bg-purple-700 hover:bg-purple-800 text-white font-semibold py-3 px-8 rounded-lg transition-colors">
+          <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-3 px-8 rounded-lg transition-colors">
             See all Podcasts
           </button>
           <button className="bg-teal-700 hover:bg-teal-800 text-white font-semibold py-3 px-8 rounded-lg transition-colors">

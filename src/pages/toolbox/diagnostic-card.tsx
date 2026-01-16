@@ -83,7 +83,7 @@ export default function DiagnosticCard(): React.ReactElement {
               key={card.id}
               className="bg-white rounded-xl shadow-lg p-8 flex flex-col"
             >
-              <h2 className="text-2xl font-bold text-indigo-900 mb-6">
+              <h2 className="text-2xl font-bold text-[#95111c] mb-6">
                 {card.title}
               </h2>
 
@@ -95,7 +95,7 @@ export default function DiagnosticCard(): React.ReactElement {
                   >
                     <button
                       onClick={() => toggleSection(card.id, section.id)}
-                      className="w-full flex items-start justify-between text-left group hover:text-indigo-700 transition-colors"
+                      className="w-full flex items-start justify-between text-left group hover:text-[#95111c] transition-colors"
                       aria-expanded={isExpanded(card.id, section.id)}
                       aria-controls={`content-${card.id}-${section.id}`}
                     >
@@ -103,7 +103,7 @@ export default function DiagnosticCard(): React.ReactElement {
                         {section.title}
                       </span>
                       <span className="shrink-0 mt-1">
-                        <Plus className="w-5 h-5 text-gray-600 group-hover:text-indigo-700" />
+                        <Plus className="w-5 h-5 text-gray-600 group-hover:text-[#95111c]" />
                       </span>
                     </button>
 
@@ -119,7 +119,7 @@ export default function DiagnosticCard(): React.ReactElement {
                 ))}
               </div>
 
-              <button className="w-full bg-purple-700 hover:bg-purple-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200">
+              <button className="w-full bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200">
                 {card.buttonText}
               </button>
             </div>

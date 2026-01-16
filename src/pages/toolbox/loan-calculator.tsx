@@ -67,14 +67,14 @@ export default function LoanCalculator(): React.ReactElement {
   return (
     <div className="py-8 px-4 flex items-center justify-center">
       <div className="w-full max-w-7xl bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-indigo-900 mb-8">
+        <h1 className="text-3xl font-bold text-[#95111c] mb-8">
           Find out how much your loan could cost
         </h1>
 
         <div className="space-y-6">
           {/* Loan Amount */}
           <div>
-            <label className="block text-sm font-semibold text-indigo-900 mb-2">
+            <label className="block text-sm font-semibold text-[#95111c] mb-2">
               Enter loan amount
             </label>
             <input
@@ -88,7 +88,7 @@ export default function LoanCalculator(): React.ReactElement {
 
           {/* Term Slider */}
           <div>
-            <label className="block text-sm font-semibold text-indigo-900 mb-2">
+            <label className="block text-sm font-semibold text-[#95111c] mb-2">
               Term
             </label>
             <div className="flex items-center gap-4">
@@ -100,7 +100,7 @@ export default function LoanCalculator(): React.ReactElement {
                 onChange={(e) => setTerm(parseInt(e.target.value))}
                 className="flex-1 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-teal-500"
               />
-              <span className="text-lg font-semibold text-indigo-900 min-w-[100px] text-right">
+              <span className="text-lg font-semibold text-[#95111c] min-w-[100px] text-right">
                 {term} years
               </span>
             </div>
@@ -108,7 +108,7 @@ export default function LoanCalculator(): React.ReactElement {
 
           {/* Interest Rate */}
           <div>
-            <label className="block text-sm font-semibold text-indigo-900 mb-2">
+            <label className="block text-sm font-semibold text-[#95111c] mb-2">
               Enter interest rate
             </label>
             <p className="text-xs text-gray-600 italic mb-2">
@@ -126,7 +126,7 @@ export default function LoanCalculator(): React.ReactElement {
 
           {/* Upfront Fees */}
           <div>
-            <label className="block text-sm font-semibold text-indigo-900 mb-2">
+            <label className="block text-sm font-semibold text-[#95111c] mb-2">
               Enter upfront fees
             </label>
             <p className="text-xs text-gray-600 italic mb-2">
@@ -158,23 +158,23 @@ export default function LoanCalculator(): React.ReactElement {
             <div className="pt-6 space-y-4">
               <div className="flex justify-between items-center py-4 border-b border-gray-200">
                 <div>
-                  <p className="text-sm font-semibold text-indigo-900">
+                  <p className="text-sm font-semibold text-[#95111c]">
                     Total cost of social investment
                   </p>
                   <p className="text-xs text-gray-600 italic">
                     Includes capital repayment, interest and fees
                   </p>
                 </div>
-                <p className="text-3xl font-bold text-indigo-900">
+                <p className="text-3xl font-bold text-[#95111c]">
                   {formatCurrency(result.totalCost)}
                 </p>
               </div>
 
               <div className="flex justify-between items-center py-4">
-                <p className="text-sm font-semibold text-indigo-900">
+                <p className="text-sm font-semibold text-[#95111c]">
                   Monthly repayments
                 </p>
-                <p className="text-3xl font-bold text-indigo-900">
+                <p className="text-3xl font-bold text-[#95111c]">
                   {formatCurrency(result.monthlyRepayment)}
                 </p>
               </div>

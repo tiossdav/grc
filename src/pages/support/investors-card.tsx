@@ -155,8 +155,8 @@ export default function InvestorsCard(): React.ReactElement {
               {/* Content */}
               <div className="p-6 flex-1 flex flex-col">
                 {investor.investmentAmount && (
-                  <div className="mb-4 p-4 bg-purple-50 rounded-lg border-l-4 border-purple-600">
-                    <p className="text-sm font-bold text-purple-900">
+                  <div className="mb-4 p-4 bg-purple-50 rounded-lg border-l-4 border-[#95111c]">
+                    <p className="text-sm font-bold text-[#95111c]">
                       {investor.investmentAmount}
                     </p>
                   </div>
@@ -198,7 +198,7 @@ export default function InvestorsCard(): React.ReactElement {
                   <button className="bg-[#2d1b69] hover:bg-[#3d2579] text-white font-semibold py-3 px-4 rounded-lg transition-colors">
                     Contact
                   </button>
-                  <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+                  <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-3 px-4 rounded-lg transition-colors">
                     Read more
                   </button>
                 </div>

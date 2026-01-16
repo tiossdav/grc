@@ -184,7 +184,7 @@ export default function Voices(): React.ReactElement {
                   </p>
                 </div>
               </div>
-              <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors">
+              <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-3 px-8 rounded-lg transition-colors">
                 View Case Studies
               </button>
             </div>

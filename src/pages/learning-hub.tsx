@@ -43,7 +43,7 @@ export default function LearningHub(): React.ReactElement {
           <div className="grid md:grid-cols-2">
             {/* Left Content */}
             <div className="px-12 py-6 flex flex-col justify-center">
-              <h1 className="text-3xl font-bold text-indigo-900 mb-6 leading-tight">
+              <h1 className="text-3xl font-bold text-[#95111c] mb-6 leading-tight">
                 Welcome to Good Finance's E-Learning Hub
               </h1>
 
@@ -55,7 +55,7 @@ export default function LearningHub(): React.ReactElement {
               </p>
 
               <div>
-                <button className="bg-indigo-900 hover:bg-indigo-800 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 shadow-lg">
+                <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 shadow-lg">
                   Register your interest
                 </button>
               </div>
@@ -100,7 +100,7 @@ export default function LearningHub(): React.ReactElement {
           <div className="grid md:grid-cols-2">
             {/* Left - Accordion */}
             <div className="p-12">
-              <h2 className="text-3xl font-bold text-indigo-900 mb-8">
+              <h2 className="text-3xl font-bold text-[#95111c] mb-8">
                 Social Investment Unpicked
               </h2>
 
@@ -109,7 +109,7 @@ export default function LearningHub(): React.ReactElement {
                   <div key={item.id} className="border-b border-gray-200 pb-4">
                     <button
                       onClick={() => toggleSection(item.id)}
-                      className="w-full flex items-center justify-between text-left group hover:text-indigo-700 transition-colors"
+                      className="w-full flex items-center justify-between text-left group hover:text-[#95111c] transition-colors"
                       aria-expanded={expandedSections[item.id]}
                     >
                       <span className="text-base font-semibold text-gray-800 pr-4">
@@ -117,9 +117,9 @@ export default function LearningHub(): React.ReactElement {
                       </span>
                       <span className="shrink-0">
                         {expandedSections[item.id] ? (
-                          <Minus className="w-6 h-6 text-gray-600 group-hover:text-indigo-700" />
+                          <Minus className="w-6 h-6 text-gray-600 group-hover:text-[#95111c]" />
                         ) : (
-                          <Plus className="w-6 h-6 text-gray-600 group-hover:text-indigo-700" />
+                          <Plus className="w-6 h-6 text-gray-600 group-hover:text-[#95111c]" />
                         )}
                       </span>
                     </button>
@@ -138,7 +138,7 @@ export default function LearningHub(): React.ReactElement {
               </div>
 
               <div className="mt-8">
-                <button className="bg-purple-700 hover:bg-purple-800 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
+                <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
                   Read more about bursaries
                 </button>
               </div>
@@ -167,7 +167,7 @@ export default function LearningHub(): React.ReactElement {
           <div className="grid md:grid-cols-2 gap-6 bg-[#ebe7ff]">
             {/* Left - Accordion */}
             <div className="p-12 bg-white">
-              <h2 className="text-3xl font-bold text-indigo-900 mb-8">
+              <h2 className="text-3xl font-bold text-[#95111c] mb-8">
                 Legal Structures
               </h2>
 
@@ -184,9 +184,9 @@ export default function LearningHub(): React.ReactElement {
                       </span>
                       <span className="shrink-0">
                         {expandedSections[item.id] ? (
-                          <Minus className="w-6 h-6 text-gray-600 group-hover:text-indigo-700" />
+                          <Minus className="w-6 h-6 text-gray-600 group-hover:text-[#95111c]" />
                         ) : (
-                          <Plus className="w-6 h-6 text-gray-600 group-hover:text-indigo-700" />
+                          <Plus className="w-6 h-6 text-gray-600 group-hover:text-[#95111c]" />
                         )}
                       </span>
                     </button>
@@ -205,7 +205,7 @@ export default function LearningHub(): React.ReactElement {
               </div>
 
               <div className="mt-8 flex justify-center">
-                <button className="bg-[#60358c] hover:bg-purple-800 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
+                <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
                   Register
                 </button>
               </div>
@@ -213,7 +213,7 @@ export default function LearningHub(): React.ReactElement {
 
             {/* Right - Image */}
             <div className="p-12 bg-white">
-              <h2 className="text-3xl font-bold text-indigo-900 mb-8">
+              <h2 className="text-3xl font-bold text-[#95111c] mb-8">
                 Due Diligence
               </h2>
 
@@ -230,9 +230,9 @@ export default function LearningHub(): React.ReactElement {
                       </span>
                       <span className="shrink-0">
                         {expandedSections[item.id] ? (
-                          <Minus className="w-6 h-6 text-gray-600 group-hover:text-indigo-700" />
+                          <Minus className="w-6 h-6 text-gray-600 group-hover:text-[#95111c]" />
                         ) : (
-                          <Plus className="w-6 h-6 text-gray-600 group-hover:text-indigo-700" />
+                          <Plus className="w-6 h-6 text-gray-600 group-hover:text-[#95111c]" />
                         )}
                       </span>
                     </button>
@@ -265,7 +265,7 @@ export default function LearningHub(): React.ReactElement {
           <div className="grid md:grid-cols-2 ">
             {/* Left - Accordion */}
             <div className="p-12 bg-white">
-              <h2 className="text-3xl font-bold text-indigo-900 mb-8">
+              <h2 className="text-3xl font-bold text-[#95111c] mb-8">
                 Legal Structures
               </h2>
 
@@ -282,9 +282,9 @@ export default function LearningHub(): React.ReactElement {
                       </span>
                       <span className="shrink-0">
                         {expandedSections[item.id] ? (
-                          <Minus className="w-6 h-6 text-gray-600 group-hover:text-indigo-700" />
+                          <Minus className="w-6 h-6 text-gray-600 group-hover:text-[#95111c]" />
                         ) : (
-                          <Plus className="w-6 h-6 text-gray-600 group-hover:text-indigo-700" />
+                          <Plus className="w-6 h-6 text-gray-600 group-hover:text-[#95111c]" />
                         )}
                       </span>
                     </button>
@@ -303,7 +303,7 @@ export default function LearningHub(): React.ReactElement {
               </div>
 
               <div className="mt-8 flex justify-center">
-                <button className="bg-[#60358c] hover:bg-purple-800 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
+                <button className="bg-[#95111c] hover:bg-[#95111c] text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
                   Register
                 </button>
               </div>

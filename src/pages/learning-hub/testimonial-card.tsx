@@ -112,7 +112,7 @@ export default function TestimonialCards(): React.ReactElement {
     <div className="bg-linear-to-br from-purple-50 to-blue-50 py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-indigo-900 mb-4">
+          <h2 className="text-4xl font-bold text-[#95111c] mb-4">
             What Our Learners Say
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">

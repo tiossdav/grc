@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation, Link } from "wouter";
 import {
   Facebook,
   Instagram,
@@ -10,11 +11,11 @@ import {
   X,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import logo from "@/assets/images/logo.jpg";
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [location] = useLocation(); // Wouter returns [location, setLocation]
 
   const navLinks = [
     { href: "/knowledge-hub", label: "Knowledge Hub" },
@@ -32,16 +33,24 @@ export const Header = () => {
     { Icon: Youtube, href: "#" },
   ];
 
+  // Check if link is active
+  const isActive = (href: string) =>
+    location === href || location.startsWith(href + "/");
+
   return (
-    <header className="z-50 shadow-sm">
+    <header className="z-50 shadow-sm font-montserrat">
       {/* Top Bar */}
-      <div className="bg-[#ffe4f0] mx-auto px-5 py-3 sm:py-5 sm:px-6 lg:px-8">
+      <div className="bg-[#ffffff] mx-auto px-5 py-3 sm:py-5 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center">
-            <a href="/" className="text-xl sm:text-2xl font-bold text-gray-900">
-              <img className="size-17" src={logo} alt="" />
-            </a>
+            <Link
+              href="/"
+              className="text-xl sm:text-2xl font-bold text-gray-900"
+            >
+              {/* <img className="size-40" src={image} alt="" /> */}
+              <span>Logo</span>
+            </Link>
           </div>
 
           {/* Desktop Actions */}
@@ -52,7 +61,7 @@ export const Header = () => {
                 <a
                   key={index}
                   href={href}
-                  className="text-[#60358c] hover:text-[#4a2a6e] transition-colors"
+                  className="text-[#8f2029] hover:text-[#78141c] transition-colors"
                   aria-label={`Social link ${index + 1}`}
                 >
                   <Icon className="w-5 h-5" />
@@ -61,7 +70,7 @@ export const Header = () => {
             </div>
 
             {/* Newsletter Button */}
-            <button className="bg-[#60358c] hover:bg-[#4a2a6e] text-white px-4 py-2 rounded-md transition-colors flex items-center whitespace-nowrap">
+            <button className="bg-[#95111c] hover:bg-[#78141c] text-white px-4 py-2 rounded-md transition-colors flex items-center whitespace-nowrap">
               <span className="hidden xl:inline">Stay in the loop</span>
               <Mail className="w-4 h-4 xl:ml-2" />
             </button>
@@ -72,7 +81,7 @@ export const Header = () => {
               <Input
                 type="search"
                 placeholder="Search..."
-                className="pl-9 pr-4 py-2 border-gray-200 bg-white w-48 xl:w-64"
+                className="pl-9 pr-4 py-2 border-gray-300 shadow-lg bg-white w-48 xl:w-64"
               />
             </div>
           </div>
@@ -82,21 +91,21 @@ export const Header = () => {
             {/* Search Toggle (Mobile) */}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="p-2 text-[#60358c] hover:bg-[#4a2a6e] hover:text-white rounded-md transition-colors"
+              className="p-2 text-[#95111c] hover:bg-[#78141c] hover:text-white rounded-md transition-colors"
               aria-label="Toggle search"
             >
               <Search className="w-5 h-5" />
             </button>
 
             {/* Newsletter Button (Mobile) */}
-            <button className="bg-[#60358c] hover:bg-[#4a2a6e] text-white p-2 rounded-md transition-colors">
+            <button className="bg-[#95111c] hover:bg-[#78141c] text-white p-2 rounded-md transition-colors">
               <Mail className="w-5 h-5" />
             </button>
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-[#60358c] hover:bg-[#4a2a6e] hover:text-white  rounded-md transition-colors"
+              className="p-2 text-[#95111c] hover:bg-[#78141c] hover:text-white rounded-md transition-colors"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
@@ -124,15 +133,17 @@ export const Header = () => {
       </div>
 
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex items-center justify-center bg-[#b886e5] text-white">
+      <nav className="hidden lg:flex items-center justify-center bg-[#95111c] text-white">
         {navLinks.map((link) => (
-          <a
+          <Link
             key={link.href}
             href={link.href}
-            className="hover:bg-[#3db9e7] py-4 px-4 xl:px-6 font-medium text-base xl:text-lg transition-colors whitespace-nowrap"
+            className={`py-4 px-2 xl:px-4 mx-6 font-medium text-base xl:text-lg transition-all whitespace-nowrap relative ${
+              isActive(link.href) ? "bg-[#3db9e7] " : "hover:bg-[#3db9e7]"
+            }`}
           >
             {link.label}
-          </a>
+          </Link>
         ))}
       </nav>
 
@@ -141,14 +152,18 @@ export const Header = () => {
         <nav className="lg:hidden bg-[#b886e5] text-white animate-in slide-in-from-top duration-200">
           <div className="flex flex-col">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
-                className="hover:bg-[#3db9e7] py-3 px-4 font-medium text-base border-b border-purple-400/30 transition-colors"
+                className={`py-3 px-4 font-medium text-base border-b border-purple-400/30 transition-colors ${
+                  isActive(link.href)
+                    ? "bg-[#3db9e7] border-l-4 border-l-white font-bold"
+                    : "hover:bg-[#3db9e7]"
+                }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
 
             {/* Mobile Social Links */}
@@ -157,7 +172,7 @@ export const Header = () => {
                 <a
                   key={index}
                   href={href}
-                  className="text-[#60358c] hover:text-[#3c1f5e]  transition-colors"
+                  className="text-[#95111c] hover:text-[#3c1f5e] transition-colors"
                   aria-label={`Social link ${index + 1}`}
                 >
                   <Icon className="w-5 h-5" />

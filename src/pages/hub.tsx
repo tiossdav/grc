@@ -229,7 +229,7 @@ const Hub = () => {
         <div className="w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden">
           <div className="grid md:grid-cols-2">
             {/* Left Section - Teal Background */}
-            <div className="bg-[#60358c] px-12 py-2 flex flex-col justify-center text-white">
+            <div className="bg-[#95111c] px-12 py-2 flex flex-col justify-center text-white">
               <h1 className="text-3xl font-bold font-serif mb-6">
                 How much does it cost?
               </h1>
