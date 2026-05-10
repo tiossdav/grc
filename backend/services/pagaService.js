@@ -89,7 +89,6 @@ class PagaService {
       };
 
       const hash = this.generateHash(requestData);
-
       const response = await axios.post(
         `${this.baseUrl}/merchant-rest/secured/getTransactionDetails`,
         requestData,
@@ -102,7 +101,8 @@ class PagaService {
           },
         },
       );
-
+      console.log("Verified")
+      console.log(response)
       return {
         success: true,
         data: response.data,

@@ -42,6 +42,8 @@ class DonationController {
         reference,
       });
 
+      donations.set(reference, donation);
+
       // TODO: Save donation record to database
       // await Donation.create({
       //   reference,

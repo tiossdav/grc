@@ -13,7 +13,7 @@ export const API_ENDPOINTS = {
   // Donations
   DONATION_INITIALIZE_PAGA: `${API_BASE_URL}/api/donations/initialize-paga`,
   DONATION_VERIFY: (reference: string) =>
-    `${API_BASE_URL}/api/donations/verify/${reference}`,
+    `${API_BASE_URL}/api/donations/verify-payment/${reference}`,
   DONATION_BANK_TRANSFER: `${API_BASE_URL}/api/donations/bank-transfer`,
   DONATION_GET: (reference: string) =>
     `${API_BASE_URL}/api/donations/${reference}`,

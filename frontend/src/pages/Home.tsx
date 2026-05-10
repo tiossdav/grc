@@ -761,6 +761,19 @@ const Home = () => {
             </div>
           </section>
 
+          {/* Floating Donate Button */}
+          {!isDonationModalOpen && (
+            <div className="fixed bottom-6 right-6 z-50">
+              <button
+                onClick={() => handleDonateClick()}
+                className="group flex items-center gap-3 bg-[#95111c] hover:bg-[#7a0e16] text-white font-semibold px-5 py-4 rounded-full shadow-xl transition-all duration-300 hover:scale-105"
+              >
+                <Heart className="w-5 h-5" />
+                <span className="hidden sm:inline">Donate</span>
+              </button>
+            </div>
+          )}
+
           <Footer />
         </div>
       )}

@@ -2,6 +2,9 @@
 
 const express = require("express");
 const router = express.Router();
+const pagaService = require("../services/pagaService");
+const emailService = require("../services/emailService");
+const DonationController = require("../controllers/donationController");
 const { body, validationResult } = require("express-validator");
 
 // Sanitize input to prevent XSS
@@ -115,7 +118,8 @@ router.post(
   "/initialize-paga",
   pagaValidation,
   checkValidation,
-  async (req, res) => {
+  DonationController.initializePaga,
+  /*async (req, res) => {
     try {
       const { amount, email, phoneNumber, donorName } = req.body;
       const reference = generateReference();
@@ -154,7 +158,7 @@ router.post(
         message: "Failed to initialize payment. Please try again.",
       });
     }
-  },
+  },*/
 );
 
 // ============================================
@@ -220,7 +224,6 @@ router.post("/verify-payment/:reference", async (req, res) => {
     }
 
     const { amount: paidAmount } = req.body;
-
     if (paidAmount && paidAmount !== donation.expectedAmount) {
       console.error("⚠️  Amount mismatch:", {
         expected: donation.expectedAmount,
