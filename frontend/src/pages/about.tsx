@@ -25,7 +25,7 @@ import {
   Zap,
   Phone,
 } from "lucide-react";
-import francis from "@/assets/images/bod/francis.png";
+import Francis from "@/assets/images/bod/Francis.png";
 import Taibat from "@/assets/images/bod/Taibat.png";
 import Ibiba from "@/assets/images/bod/Ibiba.png";
 import temilade from "@/assets/images/bod/temilade.png";
@@ -122,7 +122,7 @@ export default function AboutPage(): React.ReactElement {
     {
       name: "Prof. Francis Egbokhare",
       role: "Board Member",
-      image: francis,
+      image: Francis,
       bio: "Distinguished Nigerian academic and linguist, Professor of Linguistics and former Dean of the Faculty of Arts at the University of Lagos. Served as Vice-Chancellor of the University of Benin (2010-2020), championing institutional reforms and expanded research initiatives.",
       expertise: ["Linguistics", "Language Policy", "Educational Leadership"],
       affiliation: "University of Lagos",
