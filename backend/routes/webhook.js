@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../db");
+const db = require("../config/database"); // 👈 updated path
 
 router.post("/paga", express.raw({ type: "application/json" }), async (req, res) => {
   try {

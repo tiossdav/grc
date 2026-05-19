@@ -6,7 +6,7 @@ const pagaService = require("../services/pagaService");
 const emailService = require("../services/emailService");
 const DonationController = require("../controllers/donationController");
 const { body, validationResult } = require("express-validator");
-const db = require("../db");
+const db = require("../config/database"); // 👈 updated path
 
 // Sanitize input to prevent XSS
 const sanitizeInput = (value) => {

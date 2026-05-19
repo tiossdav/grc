@@ -1,6 +1,6 @@
 const pagaService = require("../services/pagaService");
 const emailService = require("../services/emailService");
-const db = require("../db");
+const db = require("../config/database"); // 👈 updated path
 
 class DonationController {
   // Initialize Paga payment
