@@ -3,6 +3,7 @@ const cors = require("cors");
 require("dotenv").config();
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const webhookRoute = require("./routes/webhook");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,6 +16,10 @@ app.use(
     credentials: true,
   }),
 );
+
+// ⚠️ Webhook must be registered BEFORE express.json()
+// because it needs the raw body
+app.use("/webhook", webhookRoute);
 
 // Body parsing middleware
 app.use(express.json());

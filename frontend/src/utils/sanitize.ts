@@ -41,8 +41,7 @@ export const isValidAmount = (amount: number): boolean => {
 /**
  * Sanitize and validate donor name
  */
+
 export const sanitizeName = (name: string): string => {
-  // Remove numbers and special characters except spaces, hyphens, and apostrophes
-  const sanitized = name.replace(/[^a-zA-Z\s\-']/g, "");
-  return sanitized.trim();
+  return name.replace(/[^a-zA-Z\s\-']/g, "");
 };

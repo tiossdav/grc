@@ -6,6 +6,7 @@ const pagaService = require("../services/pagaService");
 const emailService = require("../services/emailService");
 const DonationController = require("../controllers/donationController");
 const { body, validationResult } = require("express-validator");
+const db = require("../db");
 
 // Sanitize input to prevent XSS
 const sanitizeInput = (value) => {
@@ -211,46 +212,50 @@ router.post(
 // ============================================
 // VERIFICATION
 // ============================================
+// ============================================
+// VERIFICATION
+// ============================================
 router.post("/verify-payment/:reference", async (req, res) => {
   try {
     const { reference } = req.params;
-    const donation = donations.get(reference);
 
-    if (!donation) {
+    // ✅ Check DB instead of in-memory map
+    const { rows } = await db.query(
+      `SELECT * FROM donations WHERE reference = $1`,
+      [reference]
+    );
+
+    if (rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: "Donation not found",
       });
     }
 
-    const { amount: paidAmount } = req.body;
-    if (paidAmount && paidAmount !== donation.expectedAmount) {
-      console.error("⚠️  Amount mismatch:", {
-        expected: donation.expectedAmount,
-        received: paidAmount,
-      });
+    const donation = rows[0];
 
-      return res.status(400).json({
+    if (donation.payment_status === "success") {
+      return res.json({
+        success: true,
+        message: "Payment verified successfully",
+        isPaid: true,
+        data: {
+          reference: donation.reference,
+          amount: donation.amount,
+          donorName: donation.donor_name,
+          email: donation.donor_email,
+          paidAt: donation.completed_at,
+        },
+      });
+    } else {
+      return res.json({
         success: false,
-        message: "Payment amount mismatch",
+        message: "Payment not completed yet",
+        isPaid: false,
+        status: donation.payment_status, // pending, failed, cancelled
       });
     }
 
-    donation.status = "completed";
-    donation.verifiedAt = new Date();
-    donations.set(reference, donation);
-
-    console.log("✅ Payment verified:", reference);
-
-    res.json({
-      success: true,
-      message: "Payment verified successfully",
-      data: {
-        reference,
-        amount: donation.amount,
-        status: donation.status,
-      },
-    });
   } catch (error) {
     console.error("❌ Payment verification error:", error);
     res.status(500).json({

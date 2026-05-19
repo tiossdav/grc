@@ -122,6 +122,7 @@ export const DonationModal = ({
 
   const handleNameChange = (value: string) => {
     const sanitized = sanitizeName(value);
+    sanitized.trim();
     setDonorName(sanitized);
   };
 
@@ -843,7 +844,7 @@ export const DonationModal = ({
     const data = await response.json();
     console.log(data);
 
-    if (data.success /*&& data.isPaid*/) {
+    if (data.success && data.isPaid) {
       setStep("success");
     } else {
       setErrorMessage("Payment not confirmed yet. Please try again in a few seconds.");
