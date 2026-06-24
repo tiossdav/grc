@@ -8,6 +8,7 @@ const webhookRoute = require("./routes/webhook");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.set("trust proxy", 1); // 👈 add this before any middleware
 // Security middleware (apply FIRST)
 app.use(helmet());
 app.use(
@@ -110,9 +111,14 @@ app.use((req, res) => {
     availableRoutes: [
       "GET /health",
       "GET /api/health",
-      "POST /api/initialize-paga",
-      "POST /api/newsletter",
-      "GET /api/donations",
+      "POST /api/donations/initialize-paga",
+      "POST /api/donations/bank-transfer",
+      "GET/POST /api/donations/verify-payment/:reference",
+      "GET /api/donations/donation/:reference",
+      "GET /api/donations/list",
+      "POST /api/newsletter/subscribe",
+      "POST /api/newsletter/unsubscribe",
+      "GET /api/newsletter/stats",
     ],
   });
 });

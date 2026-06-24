@@ -35,28 +35,12 @@ class DonationController {
 
       // Initialize payment with Paga first
       const result = await pagaService.initializePayment({
-  amount,
-  email,
-  phoneNumber,
-  reference,
-  donorName, // 👈 make sure to pass this
-});
-
-// result.data is the raw Paga response now
-res.json({
-  success: true,
-  message: "Payment initialized successfully",
-  data: {
-    reference,
-    amount,
-    instructions: {
-      step1: "Open your Paga app or dial *242#",
-      step2: 'Select "Send Money"',
-      step3: `Send ₦${Number(amount).toLocaleString()} to: Graduate Research Clinic`,
-      step4: `Use reference: ${reference}`,
-    },
-  },
-});
+        amount,
+        email,
+        phoneNumber,
+        reference,
+        donorName, // 👈 make sure to pass this
+      });
 
       // ✅ Save pending donation to DB
       await db.query(
@@ -74,7 +58,7 @@ res.json({
 
       console.log(`💾 Donation ${reference} saved to DB as pending`);
 
-      // Return payment instructions
+      // Return payment instructions (ONE response only)
       res.json({
         success: true,
         message: "Payment initialized successfully",
@@ -83,7 +67,7 @@ res.json({
           amount,
           accountNumber: result.data?.accountNumber,
           merchantPublicId: result.data?.merchantPublicId,
-          paymentUrl: result.paymentUrl,
+          paymentUrl: result.data?.paymentUrl || result.paymentUrl || result.data?.redirectUrl,
           instructions: {
             step1: "Open your Paga app or dial *242#",
             step2: 'Select "Send Money"',
@@ -131,8 +115,32 @@ res.json({
       const donation = rows[0];
 
       if (donation.payment_status === "success") {
-        // TODO: Send thank you email
-        // await emailService.sendDonationThankYou(donation.donor_email, donation.amount);
+        // Send thank you email if not sent already
+        try {
+          const receiptCheck = await db.query(
+            `SELECT * FROM donation_receipts WHERE donation_id = $1`,
+            [donation.id]
+          );
+
+          if (receiptCheck.rows.length === 0) {
+            await emailService.sendDonationReceipt(
+              donation.donor_email,
+              donation.donor_name,
+              donation.amount,
+              donation.reference
+            );
+            // Record that receipt was sent
+            const receiptNumber = `REC-${donation.reference}`;
+            await db.query(
+              `INSERT INTO donation_receipts (donation_id, receipt_number, sent_at)
+               VALUES ($1, $2, NOW())`,
+              [donation.id, receiptNumber]
+            );
+            console.log(`✉️ Donation receipt sent and recorded for ${donation.reference}`);
+          }
+        } catch (emailError) {
+          console.error("❌ Failed to send donation receipt email:", emailError.message);
+        }
 
         return res.json({
           success: true,

@@ -22,7 +22,7 @@ class PagaService {
           bankAccountNumber: null,
           financialIdentificationNumber: null,
         },
-        callBackUrl: "https://graduateresearchclinic.org/webhook/paga",
+        callBackUrl: (process.env.PAGA_CALLBACK_URL || "https://graduateresearchclinic.org/webhook/paga").trim(),
         isSuppressMessages: false,
         payerCollectionFeeShare: 1,
         payeeCollectionFeeShare: 0,
@@ -31,15 +31,22 @@ class PagaService {
         displayBankDetailToPayer: true,
       });
 
-      console.log("Paga Response:", response);
+      console.log("Paga Response:", JSON.stringify(response, null, 2));
 
-      if (response.responseCode === 0) {
+      // Paga SDK wraps response as: { error: bool, response: { statusCode, statusMessage, ... } }
+      const pagaBody = response?.response || response;
+      const statusCode = String(pagaBody?.statusCode ?? pagaBody?.responseCode ?? "");
+      const isSuccess = !response.error && (statusCode === "0");
+
+      if (isSuccess) {
         return {
           success: true,
-          data: response,
+          data: pagaBody,
         };
       } else {
-        throw new Error(response.responseMessage || "Payment initialization failed");
+        const errMsg = pagaBody?.statusMessage || pagaBody?.responseMessage || "Payment initialization failed";
+        console.error(`❌ Paga rejected request — statusCode: ${statusCode}, message: ${errMsg}`);
+        throw new Error(`Paga error [${statusCode}]: ${errMsg}`);
       }
     } catch (error) {
       console.error("Paga initialization error:", error.message);

@@ -104,9 +104,6 @@ const checkValidation = (req, res, next) => {
   next();
 };
 
-// In-memory storage (use database in production)
-const donations = new Map();
-
 // Generate unique reference
 const generateReference = () => {
   return `GRC-DON-${Date.now().toString().slice(-8)}`;
@@ -169,156 +166,43 @@ router.post(
   "/bank-transfer",
   bankTransferValidation,
   checkValidation,
-  async (req, res) => {
-    try {
-      const { amount, email, donorName, reference } = req.body;
-
-      donations.set(reference, {
-        amount,
-        email,
-        donorName,
-        paymentMethod: "bank_transfer",
-        status: "pending",
-        createdAt: new Date(),
-        expectedAmount: amount,
-      });
-
-      console.log("✅ Bank transfer recorded:", {
-        reference,
-        amount,
-        email,
-        donorName,
-      });
-
-      res.json({
-        success: true,
-        message:
-          "Bank transfer recorded successfully. We will verify your payment shortly.",
-        data: {
-          reference,
-          status: "pending",
-        },
-      });
-    } catch (error) {
-      console.error("❌ Bank transfer error:", error);
-      res.status(500).json({
-        success: false,
-        message: "Failed to record transfer. Please try again.",
-      });
-    }
-  },
+  DonationController.recordBankTransfer
 );
 
 // ============================================
 // VERIFICATION
 // ============================================
-// ============================================
-// VERIFICATION
-// ============================================
-router.post("/verify-payment/:reference", async (req, res) => {
-  try {
-    const { reference } = req.params;
-
-    // ✅ Check DB instead of in-memory map
-    const { rows } = await db.query(
-      `SELECT * FROM donations WHERE reference = $1`,
-      [reference]
-    );
-
-    if (rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Donation not found",
-      });
-    }
-
-    const donation = rows[0];
-
-    if (donation.payment_status === "success") {
-      return res.json({
-        success: true,
-        message: "Payment verified successfully",
-        isPaid: true,
-        data: {
-          reference: donation.reference,
-          amount: donation.amount,
-          donorName: donation.donor_name,
-          email: donation.donor_email,
-          paidAt: donation.completed_at,
-        },
-      });
-    } else {
-      return res.json({
-        success: false,
-        message: "Payment not completed yet",
-        isPaid: false,
-        status: donation.payment_status, // pending, failed, cancelled
-      });
-    }
-
-  } catch (error) {
-    console.error("❌ Payment verification error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to verify payment",
-    });
-  }
-});
+// Support both GET and POST to handle client callback redirect (GET) and manual clicks (POST)
+router.get("/verify-payment/:reference", DonationController.verifyPayment);
+router.post("/verify-payment/:reference", DonationController.verifyPayment);
 
 // ============================================
 // GET ROUTES
 // ============================================
 
 // Get donation by reference
-router.get("/donation/:reference", async (req, res) => {
-  try {
-    const { reference } = req.params;
-    const donation = donations.get(reference);
-
-    if (!donation) {
-      return res.status(404).json({
-        success: false,
-        message: "Donation not found",
-      });
-    }
-
-    res.json({
-      success: true,
-      data: {
-        reference,
-        amount: donation.amount,
-        status: donation.status,
-        paymentMethod: donation.paymentMethod,
-        createdAt: donation.createdAt,
-      },
-    });
-  } catch (error) {
-    console.error("❌ Fetch donation error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch donation",
-    });
-  }
-});
+router.get("/donation/:reference", DonationController.getDonation);
 
 // Get all donations (admin/testing)
 router.get("/list", async (req, res) => {
   try {
-    const allDonations = Array.from(donations.entries()).map(([ref, data]) => ({
-      reference: ref,
-      amount: data.amount,
-      donorName: data.donorName,
-      email: data.email,
-      paymentMethod: data.paymentMethod,
-      status: data.status,
-      createdAt: data.createdAt,
-    }));
+    const { rows } = await db.query(
+      `SELECT * FROM donations ORDER BY created_at DESC`
+    );
 
     res.json({
       success: true,
-      count: allDonations.length,
-      total: allDonations.reduce((sum, d) => sum + d.amount, 0),
-      data: allDonations,
+      count: rows.length,
+      total: rows.reduce((sum, d) => sum + Number(d.amount), 0),
+      data: rows.map(d => ({
+        reference: d.reference,
+        amount: Number(d.amount),
+        donorName: d.donor_name,
+        email: d.donor_email,
+        paymentMethod: d.payment_method,
+        status: d.payment_status,
+        createdAt: d.created_at,
+      })),
     });
   } catch (error) {
     console.error("❌ Fetch donations error:", error);
