@@ -500,6 +500,50 @@ class EmailService {
     </html>
   `;
   }
+
+  // Send newsletter campaign to all active subscribers
+  async sendNewsletterCampaign(subject, htmlContent) {
+    try {
+      const Subscriber = require("../models/Subscriber");
+      const subscribers = await Subscriber.getAllActive();
+      if (subscribers.length === 0) {
+        return { success: true, message: "No active subscribers to send to." };
+      }
+
+      const sendPromises = subscribers.map(async (sub) => {
+        const name = sub.first_name || "Scholar";
+        const personalizedHtml = htmlContent.replace(/\{\{firstName\}\}/g, name);
+        
+        const mailOptions = {
+          from: `"${config.senderName}" <${config.senderEmail}>`,
+          to: sub.email,
+          subject: subject,
+          html: personalizedHtml,
+        };
+
+        try {
+          const info = await transporter.sendMail(mailOptions);
+          // Log activity in the database
+          await Subscriber.logActivity(sub.id, null, "sent", {
+            subject,
+            messageId: info.messageId,
+          });
+          return { email: sub.email, success: true };
+        } catch (err) {
+          console.error(`❌ Failed to send newsletter to ${sub.email}:`, err.message);
+          return { email: sub.email, success: false, error: err.message };
+        }
+      });
+
+      const results = await Promise.all(sendPromises);
+      const successful = results.filter(r => r.success).length;
+      console.log(`✉️ Newsletter campaign "${subject}" completed. Sent successfully to ${successful}/${subscribers.length} subscribers.`);
+      return { success: true, total: subscribers.length, sent: successful };
+    } catch (error) {
+      console.error("❌ Error running newsletter campaign:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = new EmailService();

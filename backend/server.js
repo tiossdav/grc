@@ -11,9 +11,23 @@ const PORT = process.env.PORT || 5000;
 app.set("trust proxy", 1); // 👈 add this before any middleware
 // Security middleware (apply FIRST)
 app.use(helmet());
+// Allow both local dev and live production origins
+const allowedOrigins = [
+  process.env.FRONTEND_URL || "http://localhost:5173",
+  process.env.LIVE_URL || "",
+  "https://graduateresearchclinic.org",
+  "https://www.graduateresearchclinic.org",
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, Postman, etc.)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      console.warn(`⚠️ CORS blocked origin: ${origin}`);
+      return callback(new Error(`CORS policy: Origin ${origin} is not allowed`));
+    },
     credentials: true,
   }),
 );
@@ -98,6 +112,8 @@ app.get("/robots.txt", (req, res) => {
 
 app.use("/api/newsletter", require("./routes/newsletter"));
 app.use("/api/donations", require("./routes/donations"));
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/admin", require("./routes/admin"));
 
 // ============================================
 // ERROR HANDLERS (MUST BE LAST!)
