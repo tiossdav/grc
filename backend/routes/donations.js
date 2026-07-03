@@ -59,9 +59,9 @@ const baseValidation = [
     .trim()
     .isLength({ min: 2, max: 100 })
     .withMessage("Name must be between 2 and 100 characters")
-    .matches(/^[a-zA-Z\s\-']+$/)
+    .matches(/^[a-zA-Z0-9\s\-'.,]+$/)
     .withMessage(
-      "Name can only contain letters, spaces, hyphens, and apostrophes",
+      "Name can only contain letters, numbers, spaces, and basic punctuation",
     )
     .customSanitizer(sanitizeInput),
 ];
@@ -72,8 +72,18 @@ const pagaValidation = [
   body("phoneNumber")
     .notEmpty()
     .withMessage("Phone number is required")
-    .matches(/^0[789][01]\d{8}$/)
-    .withMessage("Please provide a valid Nigerian phone number"),
+    .customSanitizer((value) => {
+      // Normalize +234XXXXXXXXXX or 234XXXXXXXXXX → 0XXXXXXXXXX
+      if (typeof value === "string") {
+        const cleaned = value.replace(/\s+/g, "").replace(/-/g, "");
+        if (cleaned.startsWith("+234")) return "0" + cleaned.slice(4);
+        if (cleaned.startsWith("234") && cleaned.length === 13) return "0" + cleaned.slice(3);
+        return cleaned;
+      }
+      return value;
+    })
+    .matches(/^0[789]\d{9}$/)
+    .withMessage("Please provide a valid Nigerian phone number (e.g. 08012345678)"),
 ];
 
 // Bank transfer validation
