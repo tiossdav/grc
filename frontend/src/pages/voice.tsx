@@ -68,6 +68,8 @@ interface Podcast {
   region: string;
 }
 
+
+
 export default function Voices() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -377,6 +379,15 @@ export default function Voices() {
     },
   ];
 
+  const pastRecordings = [
+    {
+      title: "Quantum Redirections and 'The Field' in Global Social Science",
+      host: "Professor Oka Obono",
+      date: "August 19th, 2026",
+      audioUrl: "https://res.cloudinary.com/boq4ks8l/video/upload/Meeting_2_compressed.mp3",
+    }
+  ];
+
   const liveStreams = [
     {
       title: "Monthly Researcher Roundtable",
@@ -635,6 +646,36 @@ export default function Voices() {
                         </>
                       )}
                     </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Past Event Recordings */}
+            <div className="mt-12">
+              <h2 className="text-3xl font-bold text-[#95111c] mb-6 flex items-center gap-3">
+                <Mic className="w-8 h-8 text-purple-600" />
+                Past Event Recordings
+              </h2>
+
+              <div className="space-y-4">
+                {pastRecordings.map((recording, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-white rounded-xl p-6 border-2 border-gray-100 hover:shadow-lg transition-all"
+                  >
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      {recording.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      Hosted by {recording.host} • {recording.date}
+                    </p>
+                    <div className="w-full">
+                      <audio controls className="w-full rounded-lg">
+                        <source src={recording.audioUrl} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
                   </div>
                 ))}
               </div>

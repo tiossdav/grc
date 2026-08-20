@@ -24,6 +24,7 @@ export const Header = () => {
     { href: "/voices", label: "Voices" },
     { href: "/learning-hub", label: "Learning Hub" },
     { href: "/partner-portal", label: "Partner Portal" },
+    { href: "/careers", label: "Careers" },
   ];
 
   const socialLinks = [

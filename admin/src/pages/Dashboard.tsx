@@ -132,11 +132,9 @@ export default function Dashboard() {
               </div>
               <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-600">
                 <span>{card.subtitle}</span>
-                <Link href={card.link}>
-                  <a className="text-[#95111c] font-bold hover:underline inline-flex items-center gap-1">
+                <Link href={card.link} className="text-[#95111c] font-bold hover:underline inline-flex items-center gap-1">
                     Manage
                     <ArrowRight className="w-3 h-3" />
-                  </a>
                 </Link>
               </div>
             </div>
@@ -150,11 +148,9 @@ export default function Dashboard() {
         <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs lg:col-span-2">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-bold text-gray-900">Recent Transactions</h3>
-            <Link href="/donations">
-              <a className="text-[#95111c] font-bold text-sm hover:underline inline-flex items-center gap-1">
+            <Link href="/donations" className="text-[#95111c] font-bold text-sm hover:underline inline-flex items-center gap-1">
                 View All
                 <ArrowRight className="w-4 h-4" />
-              </a>
             </Link>
           </div>
           <div className="overflow-x-auto">
@@ -212,23 +208,17 @@ export default function Dashboard() {
           <div>
             <h3 className="text-lg font-bold text-gray-900 mb-6">Quick Tasks</h3>
             <div className="space-y-4">
-              <Link href="/events">
-                <a className="flex items-center gap-3 p-4 rounded-xl border border-gray-100 hover:border-[#95111c]/20 hover:bg-[#95111c]/5 transition-all text-sm font-bold text-gray-700">
+              <Link href="/events" className="flex items-center gap-3 p-4 rounded-xl border border-gray-100 hover:border-[#95111c]/20 hover:bg-[#95111c]/5 transition-all text-sm font-bold text-gray-700">
                   <CalendarRange className="w-5 h-5 text-[#95111c]" />
                   Post New Upcoming Event
-                </a>
               </Link>
-              <Link href="/subscribers">
-                <a className="flex items-center gap-3 p-4 rounded-xl border border-gray-100 hover:border-[#95111c]/20 hover:bg-[#95111c]/5 transition-all text-sm font-bold text-gray-700">
+              <Link href="/subscribers" className="flex items-center gap-3 p-4 rounded-xl border border-gray-100 hover:border-[#95111c]/20 hover:bg-[#95111c]/5 transition-all text-sm font-bold text-gray-700">
                   <Mail className="w-5 h-5 text-[#95111c]" />
                   Send Newsletter Campaign
-                </a>
               </Link>
-              <Link href="/partners">
-                <a className="flex items-center gap-3 p-4 rounded-xl border border-gray-100 hover:border-[#95111c]/20 hover:bg-[#95111c]/5 transition-all text-sm font-bold text-gray-700">
+              <Link href="/partners" className="flex items-center gap-3 p-4 rounded-xl border border-gray-100 hover:border-[#95111c]/20 hover:bg-[#95111c]/5 transition-all text-sm font-bold text-gray-700">
                   <Users className="w-5 h-5 text-[#95111c]" />
                   Manage Partners List
-                </a>
               </Link>
             </div>
           </div>

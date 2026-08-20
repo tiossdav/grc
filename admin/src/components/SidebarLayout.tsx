@@ -50,15 +50,13 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
             const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
             const Icon = item.icon;
             return (
-              <Link key={item.name} href={item.href}>
-                <a className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold transition-all ${
+              <Link key={item.name} href={item.href} className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold transition-all ${
                   isActive 
                     ? "bg-[#95111c]/10 text-[#95111c]" 
                     : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                 }`}>
                   <Icon className={`w-5 h-5 ${isActive ? "text-[#95111c]" : "text-gray-400 group-hover:text-gray-500"}`} />
                   {item.name}
-                </a>
               </Link>
             );
           })}

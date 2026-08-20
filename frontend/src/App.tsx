@@ -10,6 +10,7 @@ import AboutPage from "./pages/about";
 import Newsletter from "./components/ui/newsletter";
 import ScrollToTop from "./components/ScrollToTop";
 import DonationCallback from "./pages/DonationCallback";
+import Careers from "./pages/careers";
 import { initGA, trackPageView } from "./utils/analytics";
 import { useEffect } from "react";
 
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/learning-hub" component={LearningHub} />
       <Route path="/partner-portal" component={PartnerPortal} />
       <Route path="/donation/callback" component={DonationCallback} />
+      <Route path="/careers" component={Careers} />
     </Switch>
   );
 }

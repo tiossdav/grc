@@ -17,6 +17,7 @@ const allowedOrigins = [
   process.env.LIVE_URL || "",
   "https://graduateresearchclinic.org",
   "https://www.graduateresearchclinic.org",
+  "http://localhost:5174" //for admin page development
 ].filter(Boolean);
 
 app.use(

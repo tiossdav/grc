@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { CalendarRange, Plus, Edit, Trash2, X, AlertTriangle, Monitor, MapPin } from "lucide-react";
+import { CalendarRange, Plus, Edit, Trash2, X, Monitor, MapPin } from "lucide-react";
 
 interface Event {
   id: number;

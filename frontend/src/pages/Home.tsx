@@ -45,6 +45,7 @@ const Home = () => {
   const [selectedDonationAmount, setSelectedDonationAmount] = useState<
     number | null
   >(null);
+  const [showNudge, setShowNudge] = useState(true);
 
   // Update the donation button clicks to open the modal
   const handleDonateClick = (amount?: number) => {
@@ -775,6 +776,41 @@ const Home = () => {
           )}
 
           <Footer />
+
+          {/* Call for Applications Nudge */}
+          {showNudge && (
+            <div className="fixed bottom-6 left-6 z-50 animate-in slide-in-from-bottom-5 fade-in duration-500 max-w-sm w-full">
+              <div className="bg-white rounded-2xl shadow-2xl border-l-4 border-[#95111c] overflow-hidden p-1">
+                <div className="relative p-5">
+                  <button 
+                    onClick={() => setShowNudge(false)}
+                    className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-full p-1 transition-colors"
+                    aria-label="Close"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  </button>
+                  
+                  <div className="flex items-start gap-4">
+                    <div>
+                      <h4 className="font-bold text-gray-900 mb-1 text-lg">Call for Applications!</h4>
+                      <p className="text-sm text-gray-600 mb-3">
+                        We are currently hiring for multiple positions. Join our mission to transform African research.
+                      </p>
+                      <button 
+                        onClick={() => {
+                          setShowNudge(false);
+                          setLocation("/careers");
+                        }}
+                        className="text-sm font-bold text-white bg-[#95111c] hover:bg-[#7a0e16] px-4 py-2 rounded-lg transition-colors w-full text-center shadow-sm cursor-pointer"
+                      >
+                        View Open Roles
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>
