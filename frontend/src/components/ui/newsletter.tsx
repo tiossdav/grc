@@ -75,9 +75,9 @@ const Newsletter = () => {
 
     try {
       // FIX: Add /api to the path
-      const apiUrl = import.meta.env.VITE_API_URL || "https://localhost:5000";
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
       const response = await fetch(
-        `${apiUrl}/api/newsletter/subscribe`, // ← FIXED: Added /api
+        `${apiUrl}/api/newsletter/subscribe`,
         {
           method: "POST",
           headers: {

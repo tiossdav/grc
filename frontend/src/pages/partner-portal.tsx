@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { API_BASE_URL } from "@/config/api";
 import { Header } from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import {
@@ -112,60 +113,27 @@ export default function PartnerPortal(): React.ReactElement {
 
   // Strategic Partners - Updated with actual partners
 
-  const strategicPartners = [
-    {
-      name: "SHRIN",
-      fullName: "Slum and Rural Health Initiative",
-      type: "Health Organization",
-      description:
-        "Partnering to improve health outcomes in underserved communities",
-    },
-    {
-      name: "NAL",
-      fullName: "Nigerian Academy of Letters",
-      type: "Academic Institution",
-      description: "Collaboration on literary research and academic excellence",
-    },
-    {
-      name: "NIIA",
-      fullName: "Nigerian Institute of International Affairs",
-      type: "Research Institute",
-      description:
-        "Joint research on international relations and policy analysis",
-    },
-    {
-      name: "ASLI",
-      fullName: "African Space Leadership Institute",
-      type: "Space & Technology",
-      description:
-        "Advancing space science research and leadership development",
-    },
-    {
-      name: "DiasporaNG",
-      fullName: "DiasporaNG",
-      type: "Diaspora Network",
-      description: "Connecting African diaspora scholars and professionals",
-    },
-    {
-      name: "HelpMum Africa",
-      fullName: "HelpMum Africa",
-      type: "NGO",
-      description:
-        "Supporting maternal health and women's empowerment initiatives",
-    },
-    {
-      name: "Duke of Shomolu Foundation",
-      fullName: "Duke of Shomolu Foundation",
-      type: "Foundation",
-      description: "Community development and educational advancement programs",
-    },
-    {
-      name: "Achievers University, Owo",
-      fullName: "Achievers University, Owo",
-      type: "Educational Institution",
-      description: "Academic collaboration and capacity building initiatives",
-    },
-  ];
+  const [strategicPartners, setStrategicPartners] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/partners`);
+        const data = await response.json();
+        if (data.success) {
+          setStrategicPartners(data.data.map((p: any) => ({
+            name: p.name,
+            fullName: p.full_name || p.name,
+            type: p.type || "Partner",
+            description: p.description || "",
+          })));
+        }
+      } catch (err) {
+        console.error("Failed to fetch partners", err);
+      }
+    };
+    fetchPartners();
+  }, []);
 
   const partnershipOpportunities = [
     {

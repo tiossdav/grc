@@ -34,4 +34,34 @@ router.get("/donations", adminController.getDonations);
 router.get("/subscribers", adminController.getSubscribers);
 router.post("/send-campaign", adminController.sendCampaign);
 
+// Podcasts CRUD
+router.get("/podcasts", adminController.getPodcasts);
+router.post("/podcasts", adminController.createPodcast);
+router.put("/podcasts/:id", adminController.updatePodcast);
+router.delete("/podcasts/:id", adminController.deletePodcast);
+
+// Courses CRUD
+router.get("/courses", adminController.getCourses);
+router.post("/courses", adminController.createCourse);
+router.put("/courses/:id", adminController.updateCourse);
+router.delete("/courses/:id", adminController.deleteCourse);
+
+// Publications CRUD
+router.get("/publications", adminController.getPublications);
+router.post("/publications", adminController.createPublication);
+router.put("/publications/:id", adminController.updatePublication);
+router.delete("/publications/:id", adminController.deletePublication);
+
+// Research Projects CRUD
+router.get("/research-projects", adminController.getResearchProjects);
+router.post("/research-projects", adminController.createResearchProject);
+router.put("/research-projects/:id", adminController.updateResearchProject);
+router.delete("/research-projects/:id", adminController.deleteResearchProject);
+
+// Scholars CRUD
+router.get("/scholars", adminController.getScholars);
+router.post("/scholars", adminController.createScholar);
+router.put("/scholars/:id", adminController.updateScholar);
+router.delete("/scholars/:id", adminController.deleteScholar);
+
 module.exports = router;

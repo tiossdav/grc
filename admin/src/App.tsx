@@ -2,9 +2,15 @@ import { Switch, Route, useLocation } from "wouter";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Events from "./pages/Events";
+import Courses from "./pages/Courses";
+import Podcasts from "./pages/Podcasts";
+import BoardMembers from "./pages/BoardMembers";
 import Subscribers from "./pages/Subscribers";
 import Donations from "./pages/Donations";
 import Partners from "./pages/Partners";
+import Publications from "./pages/Publications";
+import ResearchProjects from "./pages/ResearchProjects";
+import Scholars from "./pages/Scholars";
 import SidebarLayout from "./components/SidebarLayout";
 import { useEffect } from "react";
 import axios from "axios";
@@ -30,6 +36,12 @@ function App() {
       <Switch>
         <Route path="/" component={Dashboard} />
         <Route path="/events" component={Events} />
+        <Route path="/courses" component={Courses} />
+        <Route path="/podcasts" component={Podcasts} />
+        <Route path="/board-members" component={BoardMembers} />
+        <Route path="/publications" component={Publications} />
+        <Route path="/research-projects" component={ResearchProjects} />
+        <Route path="/scholars" component={Scholars} />
         <Route path="/subscribers" component={Subscribers} />
         <Route path="/donations" component={Donations} />
         <Route path="/partners" component={Partners} />

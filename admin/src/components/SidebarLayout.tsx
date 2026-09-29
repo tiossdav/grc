@@ -7,7 +7,9 @@ import {
   HeartHandshake, 
   Users, 
   LogOut,
-  UserCheck
+  UserCheck,
+  BookOpen,
+  GraduationCap
 } from "lucide-react";
 
 interface SidebarLayoutProps {
@@ -25,6 +27,12 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
   const navItems = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
     { name: "Events", href: "/events", icon: CalendarRange },
+    { name: "Courses", href: "/courses", icon: CalendarRange },
+    { name: "Podcasts", href: "/podcasts", icon: CalendarRange },
+    { name: "Board Members", href: "/board-members", icon: Users },
+    { name: "Scholars", href: "/scholars", icon: GraduationCap },
+    { name: "Publications", href: "/publications", icon: BookOpen },
+    { name: "Research Projects", href: "/research-projects", icon: BookOpen },
     { name: "Newsletter", href: "/subscribers", icon: Mail },
     { name: "Donations", href: "/donations", icon: HeartHandshake },
     { name: "Partners", href: "/partners", icon: Users },

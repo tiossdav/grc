@@ -5,7 +5,9 @@ import { Users, Plus, Pencil, Trash2, X } from "lucide-react";
 interface Partner {
   id: number;
   name: string;
+  full_name: string | null;
   type: string;
+  description: string | null;
   website_url: string | null;
   contact_email: string | null;
   is_active: boolean;
@@ -21,7 +23,9 @@ export default function Partners() {
   // Form State
   const [formData, setFormData] = useState({
     name: "",
+    full_name: "",
     type: "",
+    description: "",
     website_url: "",
     contact_email: "",
     is_active: true
@@ -50,7 +54,9 @@ export default function Partners() {
       setEditingPartner(partner);
       setFormData({
         name: partner.name || "",
+        full_name: partner.full_name || "",
         type: partner.type || "",
+        description: partner.description || "",
         website_url: partner.website_url || "",
         contact_email: partner.contact_email || "",
         is_active: partner.is_active
@@ -59,7 +65,9 @@ export default function Partners() {
       setEditingPartner(null);
       setFormData({
         name: "",
+        full_name: "",
         type: "",
+        description: "",
         website_url: "",
         contact_email: "",
         is_active: true
@@ -181,15 +189,35 @@ export default function Partners() {
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Partner Name *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Partner Name (Acronym/Short) *</label>
                 <input
                   type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full rounded-xl border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#95111c] focus:border-transparent outline-none"
-                  placeholder="e.g. Acme Corp"
+                  placeholder="e.g. NAL"
                 />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Full Name</label>
+                <input
+                  type="text"
+                  value={formData.full_name}
+                  onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                  className="w-full rounded-xl border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#95111c] focus:border-transparent outline-none"
+                  placeholder="e.g. Nigerian Academy of Letters"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Description</label>
+                <textarea
+                  rows={3}
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="w-full rounded-xl border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#95111c] focus:border-transparent outline-none"
+                  placeholder="Partner description..."
+                ></textarea>
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">Partner Type *</label>

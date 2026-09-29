@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { API_BASE_URL } from "@/config/api";
 import { Header } from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import {
   BookOpen,
   Search,
   Download,
-  Video,
   FileText,
-  Headphones,
   Users,
   TrendingUp,
   Award,
@@ -124,101 +123,42 @@ export default function KnowledgeHub(): React.ReactElement {
     { id: "career", label: "Career Development", count: 30 },
   ];
 
-  const featuredResources = [
-    {
-      type: "Guide",
-      icon: FileText,
-      title: "Complete Guide to PhD Applications in Africa",
-      description:
-        "Step-by-step guide to securing funded doctoral positions across African universities and international programs.",
-      author: "Dr. Amara Okafor",
-      duration: "45 min read",
-      downloads: 2450,
-      category: "career",
-      featured: true,
-    },
-    {
-      type: "Video Series",
-      icon: Video,
-      title: "Research Methodology Masterclass",
-      description:
-        "Comprehensive 10-part video series covering qualitative and quantitative research methods.",
-      author: "Prof. Ibrahim Mensah",
-      duration: "8 hours",
-      views: 5200,
-      category: "research",
-      featured: true,
-    },
-    {
-      type: "Podcast",
-      icon: Headphones,
-      title: "Publishing in Top-Tier Journals",
-      description:
-        "Expert insights on navigating the peer-review process and publishing strategies for African scholars.",
-      author: "Dr. Naledi Mbatha",
-      duration: "50 min",
-      listens: 3800,
-      category: "publishing",
-      featured: true,
-    },
-  ];
+  const [featuredResources, setFeaturedResources] = useState<any[]>([]);
+  const [resources, setResources] = useState<any[]>([]);
 
-  const resources = [
-    {
-      type: "Article",
-      title: "Avoiding Plagiarism: Best Practices for Academic Integrity",
-      category: "writing",
-      author: "Dr. Kemi Adeyemi",
-      date: "2 days ago",
-      views: 1240,
-      duration: "15 min read",
-    },
-    {
-      type: "Template",
-      title: "Research Proposal Template for African Contexts",
-      category: "research",
-      author: "Dr. Samuel Njoroge",
-      date: "1 week ago",
-      downloads: 890,
-      duration: "Download",
-    },
-    {
-      type: "Webinar",
-      title: "Grant Writing for African Development Research",
-      category: "grants",
-      author: "Prof. Zainab Hassan",
-      date: "3 days ago",
-      views: 620,
-      duration: "90 min",
-    },
-    {
-      type: "Guide",
-      title: "Building Your Academic Profile on LinkedIn",
-      category: "career",
-      author: "Dr. Tunde Bakare",
-      date: "5 days ago",
-      views: 1580,
-      duration: "25 min read",
-    },
-    {
-      type: "Video",
-      title: "Understanding Mixed Methodology Approaches",
-      category: "research",
-      author: "Prof. Grace Mwangi",
-      date: "1 week ago",
-      views: 2100,
-      duration: "45 min",
-    },
-    {
-      type: "Checklist",
-      title: "PhD Application Checklist & Timeline",
-      category: "career",
-      author: "Dr. David Osei",
-      date: "4 days ago",
-      downloads: 1450,
-      duration: "Download",
-    },
-  ];
+  useEffect(() => {
+    const fetchPublications = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/publications`);
+        const data = await response.json();
+        if (data.success) {
+          const pubs = data.data.map((p: any) => {
+            const pubDate = p.publication_date ? new Date(p.publication_date) : new Date();
+            const daysAgo = Math.floor((new Date().getTime() - pubDate.getTime()) / (1000 * 3600 * 24));
+            
+            return {
+              type: p.publication_type.replace('_', ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
+              title: p.title,
+              category: "research", // default
+              author: p.journal_name || "Unknown Author",
+              date: daysAgo === 0 ? "Today" : `${daysAgo} days ago`,
+              views: Math.floor(Math.random() * 2000) + 100, // mock views
+              duration: "15 min read", // mock duration
+              description: p.abstract || p.title,
+              icon: FileText,
+              featured: true
+            };
+          });
+
+          setFeaturedResources(pubs.slice(0, 3));
+          setResources(pubs.slice(3));
+        }
+      } catch (err) {
+        console.error("Failed to fetch publications", err);
+      }
+    };
+    fetchPublications();
+  }, []);
 
   const upcomingWebinars = [
     {
@@ -244,26 +184,27 @@ export default function KnowledgeHub(): React.ReactElement {
     },
   ];
 
-  const expertContributors = [
-    {
-      name: "Prof. Kwame Nkrumah",
-      role: "Research Methodology",
-      contributions: 24,
-      image: null,
-    },
-    {
-      name: "Dr. Amina Yusuf",
-      role: "Grant Writing",
-      contributions: 18,
-      image: null,
-    },
-    {
-      name: "Prof. Sipho Ndlovu",
-      role: "Academic Writing",
-      contributions: 31,
-      image: null,
-    },
-  ];
+  const [expertContributors, setExpertContributors] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchScholars = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/scholars`);
+        const data = await response.json();
+        if (data.success) {
+          setExpertContributors(data.data.map((s: any) => ({
+            name: `${s.first_name} ${s.last_name}`,
+            role: s.field_of_study || "Research",
+            contributions: Math.floor(Math.random() * 40) + 5, // mock contributions
+            image: s.profile_image_url || null,
+          })));
+        }
+      } catch (err) {
+        console.error("Failed to fetch scholars", err);
+      }
+    };
+    fetchScholars();
+  }, []);
 
   const filteredResources =
     activeCategory === "all"

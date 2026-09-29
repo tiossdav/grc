@@ -431,6 +431,422 @@ class AdminController {
       res.status(500).json({ success: false, message: "Failed to dispatch email campaign: " + error.message });
     }
   }
+  // ============================================
+  // PODCASTS CRUD
+  // ============================================
+  async getPodcasts(req, res) {
+    try {
+      const { rows } = await db.query("SELECT * FROM podcasts ORDER BY date DESC, created_at DESC");
+      res.json({ success: true, data: rows });
+    } catch (error) {
+      console.error("Get podcasts error:", error);
+      res.status(500).json({ success: false, message: "Failed to fetch podcasts" });
+    }
+  }
+
+  async createPodcast(req, res) {
+    try {
+      const { title, host, description, media_url, status, date, participants_count } = req.body;
+      const query = `
+        INSERT INTO podcasts (title, host, description, media_url, status, date, participants_count)
+        VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
+      `;
+      const { rows } = await db.query(query, [title, host, description, media_url, status || 'published', date || new Date(), participants_count || 0]);
+      res.status(201).json({ success: true, message: "Podcast created", data: rows[0] });
+    } catch (error) {
+      console.error("Create podcast error:", error);
+      res.status(500).json({ success: false, message: "Failed to create podcast" });
+    }
+  }
+
+  async updatePodcast(req, res) {
+    try {
+      const { id } = req.params;
+      const { title, host, description, media_url, status, date, participants_count } = req.body;
+      const query = `
+        UPDATE podcasts 
+        SET title=$1, host=$2, description=$3, media_url=$4, status=$5, date=$6, participants_count=$7, updated_at=CURRENT_TIMESTAMP
+        WHERE id=$8 RETURNING *
+      `;
+      const { rows } = await db.query(query, [title, host, description, media_url, status, date, participants_count, id]);
+      res.json({ success: true, message: "Podcast updated", data: rows[0] });
+    } catch (error) {
+      console.error("Update podcast error:", error);
+      res.status(500).json({ success: false, message: "Failed to update podcast" });
+    }
+  }
+
+  async deletePodcast(req, res) {
+    try {
+      const { id } = req.params;
+      await db.query("DELETE FROM podcasts WHERE id = $1", [id]);
+      res.json({ success: true, message: "Podcast deleted" });
+    } catch (error) {
+      console.error("Delete podcast error:", error);
+      res.status(500).json({ success: false, message: "Failed to delete podcast" });
+    }
+  }
+
+  // ============================================
+  // COURSES CRUD
+  // ============================================
+  async getCourses(req, res) {
+    try {
+      const { rows } = await db.query("SELECT * FROM courses ORDER BY created_at DESC");
+      res.json({ success: true, data: rows });
+    } catch (error) {
+      console.error("Get courses error:", error);
+      res.status(500).json({ success: false, message: "Failed to fetch courses" });
+    }
+  }
+
+  async createCourse(req, res) {
+    try {
+      const { title, description, instructor, duration, level, skills, status } = req.body;
+      const query = `
+        INSERT INTO courses (title, description, instructor, duration, level, skills, status)
+        VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
+      `;
+      const { rows } = await db.query(query, [title, description, instructor, duration, level, skills || [], status || 'active']);
+      res.status(201).json({ success: true, message: "Course created", data: rows[0] });
+    } catch (error) {
+      console.error("Create course error:", error);
+      res.status(500).json({ success: false, message: "Failed to create course" });
+    }
+  }
+
+  async updateCourse(req, res) {
+    try {
+      const { id } = req.params;
+      const { title, description, instructor, duration, level, skills, status } = req.body;
+      const query = `
+        UPDATE courses 
+        SET title=$1, description=$2, instructor=$3, duration=$4, level=$5, skills=$6, status=$7, updated_at=CURRENT_TIMESTAMP
+        WHERE id=$8 RETURNING *
+      `;
+      const { rows } = await db.query(query, [title, description, instructor, duration, level, skills, status, id]);
+      res.json({ success: true, message: "Course updated", data: rows[0] });
+    } catch (error) {
+      console.error("Update course error:", error);
+      res.status(500).json({ success: false, message: "Failed to update course" });
+    }
+  }
+
+  async deleteCourse(req, res) {
+    try {
+      const { id } = req.params;
+      await db.query("DELETE FROM courses WHERE id = $1", [id]);
+      res.json({ success: true, message: "Course deleted" });
+    } catch (error) {
+      console.error("Delete course error:", error);
+      res.status(500).json({ success: false, message: "Failed to delete course" });
+    }
+  }
+  // ============================================
+  // PUBLICATIONS CRUD
+  // ============================================
+  async getPublications(req, res) {
+    try {
+      const { rows } = await db.query("SELECT * FROM publications ORDER BY created_at DESC");
+      res.json({ success: true, data: rows });
+    } catch (error) {
+      console.error("Get publications error:", error);
+      res.status(500).json({ success: false, message: "Failed to fetch publications" });
+    }
+  }
+
+  async createPublication(req, res) {
+    try {
+      const { title, abstract, publication_type, journal_name, publication_date, doi, url } = req.body;
+
+      if (!title || !publication_type) {
+        return res.status(400).json({ success: false, message: "Title and publication type are required" });
+      }
+
+      const query = `
+        INSERT INTO publications (title, abstract, publication_type, journal_name, publication_date, doi, url)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING *
+      `;
+      const values = [
+        title,
+        abstract || null,
+        publication_type,
+        journal_name || null,
+        publication_date || null,
+        doi || null,
+        url || null
+      ];
+
+      const { rows } = await db.query(query, values);
+      res.status(201).json({ success: true, message: "Publication added successfully", data: rows[0] });
+    } catch (error) {
+      console.error("Create publication error:", error);
+      res.status(500).json({ success: false, message: "Failed to add publication" });
+    }
+  }
+
+  async updatePublication(req, res) {
+    try {
+      const { id } = req.params;
+      const { title, abstract, publication_type, journal_name, publication_date, doi, url } = req.body;
+
+      if (!title || !publication_type) {
+        return res.status(400).json({ success: false, message: "Title and publication type are required" });
+      }
+
+      const query = `
+        UPDATE publications 
+        SET title = $1, abstract = $2, publication_type = $3, journal_name = $4, publication_date = $5, doi = $6, url = $7, updated_at = CURRENT_TIMESTAMP
+        WHERE id = $8
+        RETURNING *
+      `;
+      const values = [
+        title,
+        abstract || null,
+        publication_type,
+        journal_name || null,
+        publication_date || null,
+        doi || null,
+        url || null,
+        id
+      ];
+
+      const { rows } = await db.query(query, values);
+      if (rows.length === 0) {
+        return res.status(404).json({ success: false, message: "Publication not found" });
+      }
+
+      res.json({ success: true, message: "Publication updated successfully", data: rows[0] });
+    } catch (error) {
+      console.error("Update publication error:", error);
+      res.status(500).json({ success: false, message: "Failed to update publication" });
+    }
+  }
+
+  async deletePublication(req, res) {
+    try {
+      const { id } = req.params;
+      const { rows } = await db.query("DELETE FROM publications WHERE id = $1 RETURNING *", [id]);
+
+      if (rows.length === 0) {
+        return res.status(404).json({ success: false, message: "Publication not found" });
+      }
+
+      res.json({ success: true, message: "Publication deleted successfully", data: rows[0] });
+    } catch (error) {
+      console.error("Delete publication error:", error);
+      res.status(500).json({ success: false, message: "Failed to delete publication" });
+    }
+  }
+  // ============================================
+  // RESEARCH PROJECTS CRUD
+  // ============================================
+  async getResearchProjects(req, res) {
+    try {
+      const { rows } = await db.query("SELECT * FROM research_projects ORDER BY created_at DESC");
+      res.json({ success: true, data: rows });
+    } catch (error) {
+      console.error("Get research projects error:", error);
+      res.status(500).json({ success: false, message: "Failed to fetch research projects" });
+    }
+  }
+
+  async createResearchProject(req, res) {
+    try {
+      const { title, description, lead_scholar_id, status, start_date, end_date, funding_amount } = req.body;
+
+      if (!title) {
+        return res.status(400).json({ success: false, message: "Title is required" });
+      }
+
+      const query = `
+        INSERT INTO research_projects (title, description, lead_scholar_id, status, start_date, end_date, funding_amount)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING *
+      `;
+      const values = [
+        title,
+        description || null,
+        lead_scholar_id || null,
+        status || 'ongoing',
+        start_date || null,
+        end_date || null,
+        funding_amount || null
+      ];
+
+      const { rows } = await db.query(query, values);
+      res.status(201).json({ success: true, message: "Research project added successfully", data: rows[0] });
+    } catch (error) {
+      console.error("Create research project error:", error);
+      res.status(500).json({ success: false, message: "Failed to add research project" });
+    }
+  }
+
+  async updateResearchProject(req, res) {
+    try {
+      const { id } = req.params;
+      const { title, description, lead_scholar_id, status, start_date, end_date, funding_amount } = req.body;
+
+      if (!title) {
+        return res.status(400).json({ success: false, message: "Title is required" });
+      }
+
+      const query = `
+        UPDATE research_projects 
+        SET title = $1, description = $2, lead_scholar_id = $3, status = $4, start_date = $5, end_date = $6, funding_amount = $7, updated_at = CURRENT_TIMESTAMP
+        WHERE id = $8
+        RETURNING *
+      `;
+      const values = [
+        title,
+        description || null,
+        lead_scholar_id || null,
+        status || 'ongoing',
+        start_date || null,
+        end_date || null,
+        funding_amount || null,
+        id
+      ];
+
+      const { rows } = await db.query(query, values);
+      if (rows.length === 0) {
+        return res.status(404).json({ success: false, message: "Research project not found" });
+      }
+
+      res.json({ success: true, message: "Research project updated successfully", data: rows[0] });
+    } catch (error) {
+      console.error("Update research project error:", error);
+      res.status(500).json({ success: false, message: "Failed to update research project" });
+    }
+  }
+
+  async deleteResearchProject(req, res) {
+    try {
+      const { id } = req.params;
+      const { rows } = await db.query("DELETE FROM research_projects WHERE id = $1 RETURNING *", [id]);
+
+      if (rows.length === 0) {
+        return res.status(404).json({ success: false, message: "Research project not found" });
+      }
+
+      res.json({ success: true, message: "Research project deleted successfully", data: rows[0] });
+    } catch (error) {
+      console.error("Delete research project error:", error);
+      res.status(500).json({ success: false, message: "Failed to delete research project" });
+    }
+  }
+  // ============================================
+  // SCHOLARS CRUD
+  // ============================================
+  async getScholars(req, res) {
+    try {
+      const { rows } = await db.query("SELECT * FROM scholars ORDER BY created_at DESC");
+      res.json({ success: true, data: rows });
+    } catch (error) {
+      console.error("Get scholars error:", error);
+      res.status(500).json({ success: false, message: "Failed to fetch scholars" });
+    }
+  }
+
+  async createScholar(req, res) {
+    try {
+      const { first_name, last_name, institution, degree_level, field_of_study, country, phone, bio, profile_image_url, research_interests, linkedin_url, twitter_url, website_url, status } = req.body;
+
+      if (!first_name || !last_name) {
+        return res.status(400).json({ success: false, message: "First name and last name are required" });
+      }
+
+      const query = `
+        INSERT INTO scholars (first_name, last_name, institution, degree_level, field_of_study, country, phone, bio, profile_image_url, research_interests, linkedin_url, twitter_url, website_url, status)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+        RETURNING *
+      `;
+      const values = [
+        first_name,
+        last_name,
+        institution || null,
+        degree_level || null,
+        field_of_study || null,
+        country || null,
+        phone || null,
+        bio || null,
+        profile_image_url || null,
+        research_interests || null,
+        linkedin_url || null,
+        twitter_url || null,
+        website_url || null,
+        status || 'active'
+      ];
+
+      const { rows } = await db.query(query, values);
+      res.status(201).json({ success: true, message: "Scholar added successfully", data: rows[0] });
+    } catch (error) {
+      console.error("Create scholar error:", error);
+      res.status(500).json({ success: false, message: "Failed to add scholar" });
+    }
+  }
+
+  async updateScholar(req, res) {
+    try {
+      const { id } = req.params;
+      const { first_name, last_name, institution, degree_level, field_of_study, country, phone, bio, profile_image_url, research_interests, linkedin_url, twitter_url, website_url, status } = req.body;
+
+      if (!first_name || !last_name) {
+        return res.status(400).json({ success: false, message: "First name and last name are required" });
+      }
+
+      const query = `
+        UPDATE scholars 
+        SET first_name = $1, last_name = $2, institution = $3, degree_level = $4, field_of_study = $5, country = $6, phone = $7, bio = $8, profile_image_url = $9, research_interests = $10, linkedin_url = $11, twitter_url = $12, website_url = $13, status = $14, updated_at = CURRENT_TIMESTAMP
+        WHERE id = $15
+        RETURNING *
+      `;
+      const values = [
+        first_name,
+        last_name,
+        institution || null,
+        degree_level || null,
+        field_of_study || null,
+        country || null,
+        phone || null,
+        bio || null,
+        profile_image_url || null,
+        research_interests || null,
+        linkedin_url || null,
+        twitter_url || null,
+        website_url || null,
+        status || 'active',
+        id
+      ];
+
+      const { rows } = await db.query(query, values);
+      if (rows.length === 0) {
+        return res.status(404).json({ success: false, message: "Scholar not found" });
+      }
+
+      res.json({ success: true, message: "Scholar updated successfully", data: rows[0] });
+    } catch (error) {
+      console.error("Update scholar error:", error);
+      res.status(500).json({ success: false, message: "Failed to update scholar" });
+    }
+  }
+
+  async deleteScholar(req, res) {
+    try {
+      const { id } = req.params;
+      const { rows } = await db.query("DELETE FROM scholars WHERE id = $1 RETURNING *", [id]);
+
+      if (rows.length === 0) {
+        return res.status(404).json({ success: false, message: "Scholar not found" });
+      }
+
+      res.json({ success: true, message: "Scholar deleted successfully", data: rows[0] });
+    } catch (error) {
+      console.error("Delete scholar error:", error);
+      res.status(500).json({ success: false, message: "Failed to delete scholar" });
+    }
+  }
 }
 
 module.exports = new AdminController();

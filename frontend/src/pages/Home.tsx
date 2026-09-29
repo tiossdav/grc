@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { API_BASE_URL } from "@/config/api";
 import { Header } from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
@@ -178,26 +179,27 @@ const Home = () => {
     },
   ];
 
-  const upcomingEvents = [
-    {
-      date: "15 Feb",
-      title: "Grant Writing Workshop",
-      type: "Virtual Workshop",
-      spots: "25 spots left",
-    },
-    {
-      date: "22 Feb",
-      title: "Academic Publishing Masterclass",
-      type: "Webinar Series",
-      spots: "Open Registration",
-    },
-    {
-      date: "05 Mar",
-      title: "Mentorship Networking Event",
-      type: "Hybrid Event",
-      spots: "Limited Seats",
-    },
-  ];
+  const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/events?status=upcoming&limit=3`);
+        const data = await response.json();
+        if (data.success) {
+          setUpcomingEvents(data.data.map((evt: any) => ({
+            date: new Date(evt.start_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }),
+            title: evt.title,
+            type: `${evt.is_virtual ? 'Virtual' : 'In-Person'} ${evt.event_type.charAt(0).toUpperCase() + evt.event_type.slice(1)}`,
+            spots: evt.max_participants ? `${evt.max_participants} spots total` : "Open Registration"
+          })));
+        }
+      } catch (err) {
+        console.error("Failed to fetch events", err);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   const formatAmount = (amount: number) =>
     new Intl.NumberFormat("en-NG").format(amount);

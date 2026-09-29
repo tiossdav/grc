@@ -1,5 +1,6 @@
 // File: src/pages/Voices.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { API_BASE_URL } from "@/config/api";
 import { Header } from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import {
@@ -379,33 +380,39 @@ export default function Voices() {
     },
   ];
 
-  const pastRecordings = [
-    {
-      title: "Quantum Redirections and 'The Field' in Global Social Science",
-      host: "Professor Oka Obono",
-      date: "August 19th, 2026",
-      audioUrl: "https://res.cloudinary.com/boq4ks8l/video/upload/Meeting_2_compressed.mp3",
-    }
-  ];
+  const [pastRecordings, setPastRecordings] = useState<any[]>([]);
+  const [liveStreams, setLiveStreams] = useState<any[]>([]);
 
-  const liveStreams = [
-    {
-      title: "Monthly Researcher Roundtable",
-      host: "ScholarLink Africa",
-      time: "Every Last Friday, 3 PM WAT",
-      participants: "250+ avg",
-      status: "upcoming",
-      nextDate: "Jan 31, 2026",
-    },
-    {
-      title: "Ask the Expert: Grant Writing Workshop",
-      host: "Dr. Patricia Mensah",
-      time: "Bi-weekly Tuesdays, 5 PM WAT",
-      participants: "180+ avg",
-      status: "live",
-      nextDate: "Today at 5 PM",
-    },
-  ];
+  useEffect(() => {
+    const fetchPodcasts = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/podcasts`);
+        const data = await response.json();
+        if (data.success) {
+          const podcasts = data.data;
+          
+          setPastRecordings(podcasts.filter((p: any) => p.status === 'published' || p.status === 'archived').map((p: any) => ({
+            title: p.title,
+            host: p.host,
+            date: new Date(p.date || p.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+            audioUrl: p.media_url || "https://res.cloudinary.com/boq4ks8l/video/upload/Meeting_2_compressed.mp3",
+          })));
+
+          setLiveStreams(podcasts.filter((p: any) => p.status === 'live' || p.status === 'upcoming').map((p: any) => ({
+            title: p.title,
+            host: p.host,
+            time: p.description || "TBA",
+            participants: p.participants_count ? `${p.participants_count}+ avg` : "N/A",
+            status: p.status,
+            nextDate: new Date(p.date || p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          })));
+        }
+      } catch (err) {
+        console.error("Failed to fetch podcasts", err);
+      }
+    };
+    fetchPodcasts();
+  }, []);
 
   const podcastSeries = [
     {

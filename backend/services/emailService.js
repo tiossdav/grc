@@ -3,10 +3,11 @@ const { contactsApi, emailsApi, brevo, config } = require("../config/brevo");
 require("dotenv").config();
 
 // SMTP Transporter for Brevo
+const isSecurePort = Number(process.env.BREVO_SMTP_PORT) === 465;
 const transporter = nodemailer.createTransport({
-  host: process.env.BREVO_SMTP_HOST,
-  port: process.env.BREVO_SMTP_PORT,
-  secure: false, // Use TLS
+  host: process.env.BREVO_SMTP_HOST || "smtp-relay.brevo.com",
+  port: Number(process.env.BREVO_SMTP_PORT) || 465,
+  secure: isSecurePort,
   auth: {
     user: process.env.BREVO_SMTP_USER,
     pass: process.env.BREVO_SMTP_PASS,
@@ -16,7 +17,7 @@ const transporter = nodemailer.createTransport({
 // Verify SMTP connection on startup
 transporter.verify(function (error, success) {
   if (error) {
-    console.error("❌ SMTP connection error:", error);
+    console.error("❌ SMTP connection error:", error.message || error);
   } else {
     console.log("✅ SMTP server is ready to send emails");
   }
@@ -48,8 +49,12 @@ class EmailService {
         console.log("ℹ️ Contact already exists in Brevo:", email);
         return { success: true, message: "Contact already exists" };
       }
-      console.error("❌ Error adding contact to Brevo:", error.message);
-      throw error;
+      const errMsg =
+        error.response?.body?.message ||
+        error.response?.body?.code ||
+        error.message;
+      console.warn("⚠️ Warning: Could not sync contact to Brevo:", errMsg);
+      return { success: false, error: errMsg };
     }
   }
 
@@ -88,8 +93,8 @@ class EmailService {
       );
       return { success: true, messageId: info.messageId };
     } catch (error) {
-      console.error("❌ Error sending welcome email:", error);
-      throw error;
+      console.error("❌ Error sending welcome email:", error.message || error);
+      return { success: false, error: error.message || "Failed to send welcome email" };
     }
   }
 

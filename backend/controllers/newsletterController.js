@@ -19,15 +19,41 @@ class NewsletterController {
         } else {
           // Resubscribe
           await Subscriber.updateStatus(email, "active");
-          await emailService.addContactToBrevo(email, firstName, lastName);
-          await emailService.sendWelcomeEmail(email, firstName);
 
-          // 🆕 Send admin notification for resubscriptions too
-          await emailService.sendAdminNotification({
-            subscriberEmail: email,
-            subscriberName: `${firstName} ${lastName}`,
-            interests: interests || [],
-          });
+          // Sync to Brevo (non-blocking)
+          try {
+            const brevoResult = await emailService.addContactToBrevo(
+              email,
+              firstName,
+              lastName,
+            );
+            if (brevoResult?.data?.id) {
+              await Subscriber.updateBrevoContactId(
+                email,
+                brevoResult.data.id.toString(),
+              );
+            }
+          } catch (brevoErr) {
+            console.warn("⚠️ Brevo sync warning on resubscribe:", brevoErr.message);
+          }
+
+          // Send welcome email
+          try {
+            await emailService.sendWelcomeEmail(email, firstName);
+          } catch (emailErr) {
+            console.warn("⚠️ Welcome email error on resubscribe:", emailErr.message);
+          }
+
+          // Send admin notification
+          try {
+            await emailService.sendAdminNotification({
+              subscriberEmail: email,
+              subscriberName: `${firstName || ""} ${lastName || ""}`.trim() || email,
+              interests: interests || [],
+            });
+          } catch (adminErr) {
+            console.warn("⚠️ Admin notification error on resubscribe:", adminErr.message);
+          }
 
           return res.status(200).json({
             success: true,
@@ -40,35 +66,54 @@ class NewsletterController {
       const subscriber = await Subscriber.create(email, firstName, lastName);
 
       // Add to Brevo
-      const brevoResult = await emailService.addContactToBrevo(
-        email,
-        firstName,
-        lastName,
-      );
-
-      // Update subscriber with Brevo contact ID if available
-      if (brevoResult.data && brevoResult.data.id) {
-        await Subscriber.updateBrevoContactId(
+      try {
+        const brevoResult = await emailService.addContactToBrevo(
           email,
-          brevoResult.data.id.toString(),
+          firstName,
+          lastName,
         );
+
+        // Update subscriber with Brevo contact ID if available
+        if (brevoResult && brevoResult.data && brevoResult.data.id) {
+          await Subscriber.updateBrevoContactId(
+            email,
+            brevoResult.data.id.toString(),
+          );
+        }
+      } catch (brevoErr) {
+        console.warn("⚠️ Brevo contact sync warning:", brevoErr.message);
       }
 
       // Send welcome email
-      await emailService.sendWelcomeEmail(email, firstName);
+      let emailSent = false;
+      try {
+        const emailResult = await emailService.sendWelcomeEmail(email, firstName);
+        emailSent = !!emailResult?.success;
+      } catch (emailErr) {
+        console.warn("⚠️ Welcome email sending warning:", emailErr.message);
+      }
 
-      // 🆕 Send admin notification
-      await emailService.sendAdminNotification({
-        subscriberEmail: email,
-        subscriberName: `${firstName} ${lastName}`,
-        interests: interests || [],
-      });
+      // Send admin notification
+      try {
+        await emailService.sendAdminNotification({
+          subscriberEmail: email,
+          subscriberName: `${firstName || ""} ${lastName || ""}`.trim() || email,
+          interests: interests || [],
+        });
+      } catch (adminErr) {
+        console.warn("⚠️ Admin notification sending warning:", adminErr.message);
+      }
 
       // Log activity
-      await Subscriber.logActivity(subscriber.id, null, "sent", {
-        source: "website",
-        ip: req.ip,
-      });
+      try {
+        await Subscriber.logActivity(subscriber.id, null, emailSent ? "sent" : "delivered", {
+          source: "website",
+          ip: req.ip,
+          emailSent,
+        });
+      } catch (logErr) {
+        console.warn("⚠️ Activity log warning:", logErr.message);
+      }
 
       res.status(201).json({
         success: true,
@@ -124,15 +169,27 @@ class NewsletterController {
       await Subscriber.updateStatus(email, "unsubscribed");
 
       // Remove from Brevo list
-      await emailService.removeContactFromBrevo(email);
+      try {
+        await emailService.removeContactFromBrevo(email);
+      } catch (brevoErr) {
+        console.warn("⚠️ Brevo remove contact warning:", brevoErr.message);
+      }
 
       // Send confirmation email
-      await emailService.sendUnsubscribeEmail(email, subscriber.first_name);
+      try {
+        await emailService.sendUnsubscribeEmail(email, subscriber.first_name);
+      } catch (emailErr) {
+        console.warn("⚠️ Unsubscribe confirmation email warning:", emailErr.message);
+      }
 
       // Log activity
-      await Subscriber.logActivity(subscriber.id, null, "unsubscribed", {
-        ip: req.ip,
-      });
+      try {
+        await Subscriber.logActivity(subscriber.id, null, "unsubscribed", {
+          ip: req.ip,
+        });
+      } catch (logErr) {
+        console.warn("⚠️ Activity log warning:", logErr.message);
+      }
 
       res.status(200).json({
         success: true,

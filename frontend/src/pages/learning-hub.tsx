@@ -1,5 +1,6 @@
 // File: src/pages/LearningHub.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { API_BASE_URL } from "@/config/api";
 import { Header } from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import {
@@ -85,86 +86,34 @@ export default function LearningHub() {
   ];
 
   // Featured Courses
-  const courses = [
-    {
-      id: 1,
-      title: "PhD Application Masterclass",
-      instructor: "Dr. Amina Okonkwo",
-      category: "Pre-Doctoral",
-      level: "Beginner",
-      duration: "8h",
-      modules: 12,
-      enrolled: "2.3K",
-      rating: 4.9,
-      skills: ["Research Proposals", "CV Writing", "Interviews"],
-      featured: true,
-    },
-    {
-      id: 2,
-      title: "Grant Writing Essentials",
-      instructor: "Prof. Kwame Mensah",
-      category: "Funding",
-      level: "Intermediate",
-      duration: "12h",
-      modules: 15,
-      enrolled: "3.1K",
-      rating: 4.8,
-      skills: ["Proposals", "Budgeting", "Impact"],
-      featured: true,
-    },
-    {
-      id: 3,
-      title: "Publishing in Top Journals",
-      instructor: "Dr. Fatima Hassan",
-      category: "Publishing",
-      level: "Advanced",
-      duration: "10h",
-      modules: 10,
-      enrolled: "1.9K",
-      rating: 4.9,
-      skills: ["Manuscript Prep", "Peer Review", "Journal Selection"],
-      featured: true,
-    },
-    {
-      id: 4,
-      title: "Research Methodology",
-      instructor: "Dr. John Osei",
-      category: "Research",
-      level: "Beginner",
-      duration: "6h",
-      modules: 8,
-      enrolled: "4.2K",
-      rating: 4.7,
-      skills: ["Mixed Methods", "Data Collection", "Analysis"],
-      featured: false,
-    },
-    {
-      id: 5,
-      title: "Academic Writing Excellence",
-      instructor: "Prof. Sarah Mthembu",
-      category: "Writing",
-      level: "Intermediate",
-      duration: "9h",
-      modules: 11,
-      enrolled: "3.6K",
-      rating: 4.8,
-      skills: ["Structure", "Style", "Citations"],
-      featured: false,
-    },
-    {
-      id: 6,
-      title: "Work-Life Balance",
-      instructor: "Dr. Chioma Adeyemi",
-      category: "Wellness",
-      level: "All Levels",
-      duration: "4h",
-      modules: 6,
-      enrolled: "5.1K",
-      rating: 4.9,
-      skills: ["Time Management", "Self-Care", "Productivity"],
-      featured: false,
-    },
-  ];
+  const [courses, setCourses] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/courses`);
+        const data = await response.json();
+        if (data.success) {
+          setCourses(data.data.map((c: any) => ({
+            id: c.id,
+            title: c.title,
+            instructor: c.instructor || "GRC Instructor",
+            category: "General",
+            level: c.level || "Beginner",
+            duration: c.duration || "Self-paced",
+            modules: 10,
+            enrolled: "1.2K",
+            rating: 4.8,
+            skills: c.skills || ["Research", "Academic Writing"],
+            featured: true,
+          })));
+        }
+      } catch (err) {
+        console.error("Failed to fetch courses", err);
+      }
+    };
+    fetchCourses();
+  }, []);
 
   // Stats
   const stats = [
@@ -354,7 +303,7 @@ export default function LearningHub() {
                           </p>
 
                           <div className="flex flex-wrap gap-2 mb-4">
-                            {course.skills.map((skill, i) => (
+                            {course.skills.map((skill: string, i: number) => (
                               <span
                                 key={i}
                                 className="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-medium"

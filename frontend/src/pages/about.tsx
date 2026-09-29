@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_BASE_URL } from "@/config/api";
 import { Header } from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import {
@@ -26,16 +27,6 @@ import {
   Phone,
 } from "lucide-react";
 import Francis from "@/assets/images/bod/Francis.png";
-import Taibat from "@/assets/images/bod/Taibat.png";
-import Ibiba from "@/assets/images/bod/Ibiba.png";
-import temilade from "@/assets/images/bod/temilade.png";
-import Joaanna from "@/assets/images/bod/Joaanna.png";
-import laolu from "@/assets/images/bod/laolu.png";
-import Aiyede from "@/assets/images/bod/Aiyede.png";
-import mary from "@/assets/images/bod/mary.png";
-import Ayodele from "@/assets/images/bod/Ayodele.png";
-import tolu from "@/assets/images/bod/tolu.png";
-import Adewumi from "@/assets/images/bod/Adewumi.png";
 import { PageLoader } from "@/components/loaders/PageLoader";
 import { usePageLoader } from "@/hooks/usePageLoader";
 
@@ -118,172 +109,52 @@ export default function AboutPage(): React.ReactElement {
   ];
 
   // Board of Directors - Updated with actual members
-  const boardOfDirectors = [
-    {
-      name: "Prof. Francis Egbokhare",
-      role: "Board Member",
-      image: Francis,
-      bio: "Distinguished Nigerian academic and linguist, Professor of Linguistics and former Dean of the Faculty of Arts at the University of Lagos. Served as Vice-Chancellor of the University of Benin (2010-2020), championing institutional reforms and expanded research initiatives.",
-      expertise: ["Linguistics", "Language Policy", "Educational Leadership"],
-      affiliation: "University of Lagos",
-    },
-    {
-      name: "Dr. Temilade Sesan",
-      role: "Board Member",
-      image: temilade,
-      bio: "Sociologist (PhD Sociology and Social Policy, University of Nottingham) with research expertise in sustainable cities, energy access, agriculture and social protection. Works across sectors to identify pathways to greater inclusion of marginalized groups.",
-      expertise: [
-        "International Development",
-        "Social Protection",
-        "Sustainable Cities",
-      ],
-      affiliation: "University of Ibadan",
-    },
-    {
-      name: "Mary Omoyeme Alheri Victor-Magaji",
-      role: "Board Member",
-      image: mary,
-      bio: "Legal practitioner, human resource professional, and humanitarian committed to advancing the rights of women, youth, children, and persons with disabilities. Global Secretary of the Network of Women with Disabilities.",
-      expertise: ["Human Rights Law", "Disability Rights", "Human Resources"],
-      affiliation: "MAVIC Impact Foundation",
-    },
-    {
-      name: "Prof. Taibat Lawanson",
-      role: "Board Member",
-      image: Taibat,
-      bio: "Leading urban planner and heritage scholar, Leverhulme Professor of Planning and Heritage at the University of Liverpool, UK. Global Fellow at the Peace Research Institute Oslo and Vice President of the African Planners Institute.",
-      expertise: [
-        "Urban Planning",
-        "Heritage Studies",
-        "Environmental Justice",
-      ],
-      affiliation: "University of Liverpool",
-    },
-    {
-      name: "Segun Ayodele",
-      role: "Board Member",
-      image: Ayodele,
-      bio: "Board member with expertise in organizational development and research coordination.",
-      expertise: ["Organizational Development", "Research Coordination"],
-      affiliation: "Graduate Research Clinic",
-    },
-    {
-      name: "Joanna Adewunmi",
-      role: "Board Member",
-      image: Joaanna,
-      bio: "Doctoral candidate in the School of Information Sciences at the University of Illinois Urbana-Champaign. Research explores the intersection of information technology, information behavior, race, and gender, with focus on women in STEM.",
-      expertise: ["Information Sciences", "Gender Studies", "STEM Equity"],
-      affiliation: "University of Illinois Urbana-Champaign",
-    },
-    {
-      name: "Toluwalase Adewunmi",
-      role: "Board Member",
-      image: tolu,
-      bio: "Student at the University of Ibadan with strong emphasis on volunteerism, leadership, and community engagement. Millennium Fellow Class of 2025 and participant in the African Leadership Programme.",
-      expertise: ["Youth Leadership", "Community Engagement", "Volunteerism"],
-      affiliation: "University of Ibadan",
-    },
-    {
-      name: "Prof. Remi Aiyede",
-      role: "Board Member",
-      image: Aiyede,
-      bio: "Prominent Nigerian political scientist and governance expert, Professor of Political Institutions, Governance, and Public Policy at the University of Ibadan. Fellow of the Pan-African Scientific Research Council.",
-      expertise: ["Political Science", "Governance", "Public Policy"],
-      affiliation: "University of Ibadan",
-    },
-    {
-      name: "Olaoluwa Oluwagbenga Aladejana",
-      role: "Board Member",
-      image: laolu,
-      bio: "Seasoned technology expert with nearly two decades of experience in urban mobility and government digital transformation. Co-founder and Chief Technology Officer of Zenolynk Technology Limited.",
-      expertise: [
-        "Technology Leadership",
-        "Urban Mobility",
-        "Digital Transformation",
-      ],
-      affiliation: "Zenolynk Technology Limited",
-    },
-    {
-      name: "Ibiba Odili",
-      role: "Board Member",
-      image: Ibiba,
-      bio: "Retired Assistant Commander General of Narcotics from NDLEA. Founder/CEO of Phenomenal Strides Foundation promoting family and youth empowerment. UNODC-certified Master Trainer and author of 'Game Changing Parenting'.",
-      expertise: [
-        "Drug Prevention",
-        "Youth Development",
-        "Community Resilience",
-      ],
-      affiliation: "Phenomenal Strides Foundation",
-    },
-    {
-      name: "Oluwatobiloba Adewunmi",
-      role: "Board Member",
-      image: Adewumi,
-      bio: "Doctoral candidate at the Center for African Studies, University of Illinois Urbana-Champaign. Research focuses on climate change politics in post-1960 Lagos, urban political ecology, and sustainable development.",
-      expertise: [
-        "Climate Politics",
-        "Urban Ecology",
-        "Sustainable Development",
-      ],
-      affiliation: "University of Illinois Urbana-Champaign",
-    },
-  ];
+  const [boardOfDirectors, setBoardOfDirectors] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchBoardMembers = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/board-members`);
+        const data = await response.json();
+        if (data.success) {
+          setBoardOfDirectors(data.data.map((member: any) => ({
+            name: member.name,
+            role: member.role,
+            image: member.image_url || Francis, // Fallback if image_url is missing or just use empty string
+            bio: member.bio,
+            expertise: member.expertise || [],
+            affiliation: member.affiliation,
+          })));
+        }
+      } catch (err) {
+        console.error("Failed to fetch board members", err);
+      }
+    };
+    fetchBoardMembers();
+  }, []);
 
   // Strategic Partners - Updated with actual partners
-  const strategicPartners = [
-    {
-      name: "SHRIN",
-      fullName: "Slum and Rural Health Initiative",
-      type: "Health Organization",
-      description:
-        "Partnering to improve health outcomes in underserved communities",
-    },
-    {
-      name: "NAL",
-      fullName: "Nigerian Academy of Letters",
-      type: "Academic Institution",
-      description: "Collaboration on literary research and academic excellence",
-    },
-    {
-      name: "NIIA",
-      fullName: "Nigerian Institute of International Affairs",
-      type: "Research Institute",
-      description:
-        "Joint research on international relations and policy analysis",
-    },
-    {
-      name: "ASLI",
-      fullName: "African Space Leadership Institute",
-      type: "Space & Technology",
-      description:
-        "Advancing space science research and leadership development",
-    },
-    {
-      name: "DiasporaNG",
-      fullName: "DiasporaNG",
-      type: "Diaspora Network",
-      description: "Connecting African diaspora scholars and professionals",
-    },
-    {
-      name: "HelpMum Africa",
-      fullName: "HelpMum Africa",
-      type: "NGO",
-      description:
-        "Supporting maternal health and women's empowerment initiatives",
-    },
-    {
-      name: "Duke of Shomolu Foundation",
-      fullName: "Duke of Shomolu Foundation",
-      type: "Foundation",
-      description: "Community development and educational advancement programs",
-    },
-    {
-      name: "Achievers University, Owo",
-      fullName: "Achievers University, Owo",
-      type: "Educational Institution",
-      description: "Academic collaboration and capacity building initiatives",
-    },
-  ];
+  const [strategicPartners, setStrategicPartners] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/partners`);
+        const data = await response.json();
+        if (data.success) {
+          setStrategicPartners(data.data.map((p: any) => ({
+            name: p.name,
+            fullName: p.full_name || p.name,
+            type: p.type || "Partner",
+            description: p.description || "",
+          })));
+        }
+      } catch (err) {
+        console.error("Failed to fetch partners", err);
+      }
+    };
+    fetchPartners();
+  }, []);
 
   // Impact Statistics
   const impactStats = [
@@ -626,7 +497,7 @@ export default function AboutPage(): React.ReactElement {
                               <span>
                                 {member.name
                                   .split(" ")
-                                  .map((n) => n[0])
+                                  .map((n: string) => n[0])
                                   .join("")}
                               </span>
                             </div>
@@ -659,7 +530,7 @@ export default function AboutPage(): React.ReactElement {
                           Areas of Expertise
                         </h4>
                         <div className="flex flex-wrap gap-2">
-                          {member.expertise.map((exp, eidx) => (
+                          {member.expertise.map((exp: string, eidx: number) => (
                             <span
                               key={eidx}
                               className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium"

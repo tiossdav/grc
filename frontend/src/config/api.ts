@@ -1,7 +1,7 @@
 // Detect environment
 const isProduction = import.meta.env.PROD;
 
-const API_BASE_URL = isProduction
+export const API_BASE_URL = isProduction
   ? "https://graduateresearchclinic.org" // Production
   : import.meta.env.VITE_API_URL || "http://localhost:5000"; // Dev
 

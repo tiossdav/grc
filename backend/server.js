@@ -115,6 +115,14 @@ app.use("/api/newsletter", require("./routes/newsletter"));
 app.use("/api/donations", require("./routes/donations"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/admin", require("./routes/admin"));
+app.use("/api/events", require("./routes/events"));
+app.use("/api/podcasts", require("./routes/podcasts"));
+app.use("/api/courses", require("./routes/courses"));
+app.use("/api/board-members", require("./routes/boardMembers"));
+app.use("/api/partners", require("./routes/partners"));
+app.use("/api/publications", require("./routes/publications"));
+app.use("/api/research-projects", require("./routes/researchProjects"));
+app.use("/api/scholars", require("./routes/scholars"));
 
 // ============================================
 // ERROR HANDLERS (MUST BE LAST!)
