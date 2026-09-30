@@ -1,9 +1,12 @@
-// Detect environment
-const isProduction = import.meta.env.PROD;
+// Detect environment & API URL
+// Prioritize VITE_API_URL from environment (.env, .env.production, etc.)
+const envApiUrl = import.meta.env.VITE_API_URL?.trim();
 
-export const API_BASE_URL = isProduction
-  ? "https://graduateresearchclinic.org" // Production
-  : import.meta.env.VITE_API_URL || "http://localhost:5000"; // Dev
+export const API_BASE_URL = envApiUrl
+  ? envApiUrl.replace(/\/+$/, "")
+  : import.meta.env.PROD
+  ? "https://graduateresearchclinic.org"
+  : "http://localhost:5000";
 
 export const API_ENDPOINTS = {
   // Newsletter

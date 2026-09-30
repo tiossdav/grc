@@ -13,7 +13,7 @@ app.set("trust proxy", 1); // 👈 add this before any middleware
 app.use(helmet());
 // Allow both local dev and live production origins
 const allowedOrigins = [
-  process.env.FRONTEND_URL || "http://localhost:5173",
+  process.env.VITE_API_URL || "http://localhost:5173",
   process.env.LIVE_URL || "",
   "https://graduateresearchclinic.org",
   "https://www.graduateresearchclinic.org",

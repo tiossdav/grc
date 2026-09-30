@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Footer from "../layout/footer";
 import { Header } from "../layout/header";
+import { API_ENDPOINTS } from "@/config/api";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
@@ -74,10 +75,8 @@ const Newsletter = () => {
     setError(null);
 
     try {
-      // FIX: Add /api to the path
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
       const response = await fetch(
-        `${apiUrl}/api/newsletter/subscribe`,
+        API_ENDPOINTS.NEWSLETTER_SUBSCRIBE,
         {
           method: "POST",
           headers: {

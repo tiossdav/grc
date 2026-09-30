@@ -15,6 +15,14 @@ import SidebarLayout from "./components/SidebarLayout";
 import { useEffect } from "react";
 import axios from "axios";
 
+// Configure API base URL
+const apiBaseUrl = import.meta.env.VITE_API_URL?.trim();
+if (apiBaseUrl) {
+  axios.defaults.baseURL = apiBaseUrl.replace(/\/+$/, "");
+} else if (import.meta.env.PROD) {
+  axios.defaults.baseURL = "https://graduateresearchclinic.org";
+}
+
 function App() {
   const [location, setLocation] = useLocation();
 
