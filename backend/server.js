@@ -17,7 +17,8 @@ const allowedOrigins = [
   process.env.LIVE_URL || "",
   "https://graduateresearchclinic.org",
   "https://www.graduateresearchclinic.org",
-  "http://localhost:5174" //for admin page development
+  "http://localhost:5174", //for admin page development
+  "https://grcadmins.netlify.app",
 ].filter(Boolean);
 
 app.use(
